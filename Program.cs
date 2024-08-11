@@ -1,3 +1,7 @@
+using Microsoft.EntityFrameworkCore;
+using Mvc_Project.Models.Repositorys;
+using Mvc_Project.Models;
+
 namespace Mvc_Project
 {
     public class Program
@@ -8,6 +12,12 @@ namespace Mvc_Project
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddDbContext<Context>(option =>
+            {
+                option.UseSqlServer(builder.Configuration.GetConnectionString("connectionString"));
+            });
+
+            builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
             var app = builder.Build();
 
