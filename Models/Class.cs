@@ -2,6 +2,6 @@
 {
     public class Class
     {
-        public string hi(string name) { return name; }
+        public string hi(string name) { return hi+name; }
     }
 }
