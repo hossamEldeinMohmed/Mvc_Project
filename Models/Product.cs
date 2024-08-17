@@ -13,7 +13,7 @@ namespace Mvc_Project.Models
         public Category Category { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
-
+        public decimal Price { get; set; }
         public List<ProductAttribute> ProductAttributes { get; set; } = new List<ProductAttribute>();
         public List<SellerProduct> SellerProducts { get; set; } = new List<SellerProduct>();
         public List<ProductReview> ProductReviews { get; set; } = new List<ProductReview>();

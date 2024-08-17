@@ -1,95 +1,93 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Mvc_Project.Models;
 using Mvc_Project.Models.Repositorys;
-using Mvc_Project.Models.Repositorys.Mvc_Project.Models.Repositorys;
 
 namespace Mvc_Project.Controllers
 {
-    public class ProductController : Controller
+    public class OrderController : Controller
     {
-        private readonly IProductRepository _productRepository;
+        private readonly IOrderRepository _orderRepository;
 
-        public ProductController(IProductRepository productRepository)
+        public OrderController(IOrderRepository orderRepository)
         {
-            _productRepository = productRepository;
+            _orderRepository = orderRepository;
         }
-
 
         public IActionResult Index()
         {
-            var products = _productRepository.GetAll();
-            return View(products);
+            var orders = _orderRepository.GetAll();
+            return View(orders);
         }
 
         public IActionResult Details(int id)
         {
-            var product = _productRepository.GetByID(id);
-            if (product == null)
+            var order = _orderRepository.GetByID(id);
+            if (order == null)
             {
                 return NotFound();
             }
-            return View(product);
+            return View(order);
         }
 
-        public IActionResult Add()
+        public IActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Add(Product product)
+        public IActionResult Create(Order order)
         {
             if (ModelState.IsValid)
             {
-                _productRepository.Add(product);
+                _orderRepository.Add(order);
                 return RedirectToAction("Index");
             }
-            return View(product);
+            return View(order);
         }
 
         public IActionResult Edit(int id)
         {
-            var product = _productRepository.GetByID(id);
-            if (product == null)
+            var order = _orderRepository.GetByID(id);
+            if (order == null)
             {
                 return NotFound();
             }
-            return View(product);
+            return View(order);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, Product product)
+        public IActionResult Edit(int id, Order order)
         {
-            if (id != product.Id)
+            if (id != order.Id)
             {
                 return BadRequest();
             }
 
             if (ModelState.IsValid)
             {
-                _productRepository.Update(product);
+                _orderRepository.Update(order);
                 return RedirectToAction("Index");
             }
-            return View(product);
+            return View(order);
         }
 
         public IActionResult Delete(int id)
         {
-            var product = _productRepository.GetByID(id);
-            if (product == null)
+            var order = _orderRepository.GetByID(id);
+            if (order == null)
             {
                 return NotFound();
             }
-            return View(product);
+            return View(order);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
-            _productRepository.Delete(id);
+            _orderRepository.Delete(id);
             return RedirectToAction("Index");
         }
     }

@@ -13,12 +13,15 @@ namespace Mvc_Project
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
             builder.Services.AddDbContext<Context>(option =>
             {
                 option.UseSqlServer(builder.Configuration.GetConnectionString("connectionString"));
             });
 
             builder.Services.AddScoped<IProductRepository, ProductRepository>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 
             var app = builder.Build();
 
