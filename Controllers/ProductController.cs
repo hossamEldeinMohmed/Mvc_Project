@@ -6,9 +6,9 @@ namespace Mvc_Project.Controllers
 {
     public class ProductController : Controller
     {
-        private readonly IProductRepository productRepository;
+        private  ProductRepository productRepository;
 
-        public ProductController(IProductRepository _productRepository)
+        public ProductController(ProductRepository _productRepository)
         {
             productRepository = _productRepository;
         }
@@ -37,7 +37,7 @@ namespace Mvc_Project.Controllers
         
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Add(Proudect product)
+        public IActionResult Add(Product product)
         {
             if (ModelState.IsValid)
             {
@@ -58,24 +58,18 @@ namespace Mvc_Project.Controllers
         
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, Proudect product)
+        public IActionResult Edit(int id, Product product)
         {
             if (id != product.Id)
             {
-                return BadRequest(); 
+                //code to write
             }
 
             if (ModelState.IsValid)
             {
-                try
-                {
+            
                     productRepository.Update(product);
-                }
-                catch (Exception ex)
-                {
-                   
-                    return View(product);
-                }
+               
                 return RedirectToAction("Index");
             }
             return View(product);

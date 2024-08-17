@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Mvc_Project.Models.Repositorys;
 using Mvc_Project.Models;
+using Mvc_Project.Models.Repositorys.Mvc_Project.Models.Repositorys;
 
 namespace Mvc_Project
 {

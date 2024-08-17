@@ -1,57 +1,69 @@
-﻿namespace Mvc_Project.Models.Repositorys;
-public class ProductRepository : IProductRepository
+﻿using System.Collections.Generic;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using Mvc_Project.Models.Repositorys.Mvc_Project.Models.Repositorys;
+
+namespace Mvc_Project.Models.Repositorys
 {
-    private Context context;
-    public ProductRepository(Context context)
+    public class ProductRepository : IProductRepository
     {
-        this.context = context;
-    }
-    public void Add(Proudect newObjectModel)
-    {
-        context.Proudects.Add(newObjectModel);
-        context.SaveChanges();
-    }
+        private  Context _context;
 
-    public void Delete(int id)
-    {
-        Proudect Pro = GetByID(id);
-        if (Pro != null)
+        public ProductRepository(Context context)
         {
-            context.Remove(Pro);
-            context.SaveChanges();
+            _context = context;
         }
-    }
 
-    public List<Proudect> GetAll()
-    {
-        return context.Proudects
-
-           .ToList();
-    }
-
-    public Proudect GetByID(int id)
-    {
-        return context.Proudects.FirstOrDefault(i => i.Id == id);
-
-    }
-
-    public void Update(Proudect updatedObjectModel)
-    {
-        Proudect existingProudect = context.Proudects.FirstOrDefault(i => i.Id == updatedObjectModel.Id);
-
-        if (existingProudect != null)
+        public List<Product> GetAll()
         {
+            return _context.Products.Include(p => p.Category).ToList();
+        }
 
-            existingProudect.Name = updatedObjectModel.Name;
-            existingProudect.Price = updatedObjectModel.Price;
-            existingProudect.Image = updatedObjectModel.Image;
-            existingProudect.Description = updatedObjectModel.Description;
-            existingProudect.Category = updatedObjectModel.Category;
-            existingProudect.DateAdded = updatedObjectModel.DateAdded;
-            existingProudect.IsSold = updatedObjectModel.IsSold;
+        public Product GetByID(int id)
+        {
+            return _context.Products
+                .Include(p => p.Category)
+                .Include(p => p.ProductAttributes)
+                .Include(p => p.ProductReviews)
+                .FirstOrDefault(p => p.Id == id);
+        }
 
-            context.SaveChanges();
+        public void Add(Product newProduct)
+        {
+            _context.Products.Add(newProduct);
+            _context.SaveChanges();
+        }
+
+        public void Update(Product updatedProduct)
+        {
+            _context.Products.Update(updatedProduct);
+            _context.SaveChanges();
+        }
+
+        public void Delete(int id)
+        {
+            var Product = _context.Products.Find(id);
+            if (Product != null)
+            {
+                _context.Products.Remove(Product);
+                _context.SaveChanges();
+            }
+        }
+
+        public List<Product> GetProductsByCategory(int categoryId)
+        {
+            return _context.Products
+                .Where(p => p.CategoryId == categoryId)
+                .Include(p => p.Category)
+                .ToList();
+        }
+
+        public List<Product> SearchProducts(string searchTerm)
+        {
+            return _context.Products
+                .Where(p => p.Name.Contains(searchTerm) || p.Description.Contains(searchTerm))
+                .Include(p => p.Category)
+                .ToList();
         }
     }
 }
-
