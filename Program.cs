@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Mvc_Project.Models.Repositorys;
 using Mvc_Project.Models;
 using Mvc_Project.Models.Repositorys.Mvc_Project.Models.Repositorys;
+using Microsoft.AspNetCore.Identity;
 
 namespace Mvc_Project
 {
@@ -22,6 +23,15 @@ namespace Mvc_Project
             builder.Services.AddScoped<IProductRepository, ProductRepository>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+
+
+            ////////iIdentity///////
+            
+
+            builder.Services.AddIdentity<User, IdentityRole<int>>()
+                .AddEntityFrameworkStores<Context>();
+
+            /////////////////////////////////
 
             var app = builder.Build();
 

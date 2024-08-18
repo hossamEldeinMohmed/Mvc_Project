@@ -17,6 +17,7 @@ namespace Mvc_Project.Models.Repositorys
         public List<Product> GetAll()
         {
             return _context.Products.Include(p => p.Category).ToList();
+            
         }
 
         public Product GetByID(int id)

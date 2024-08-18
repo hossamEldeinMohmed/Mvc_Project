@@ -6,6 +6,8 @@
         {
             List<Product> GetProductsByCategory(int categoryId);
             List<Product> SearchProducts(string searchTerm);
+
+            
         }
     }
 

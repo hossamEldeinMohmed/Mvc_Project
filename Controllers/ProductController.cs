@@ -12,6 +12,7 @@ namespace Mvc_Project.Controllers
         public ProductController(IProductRepository productRepository)
         {
             _productRepository = productRepository;
+            
         }
 
 

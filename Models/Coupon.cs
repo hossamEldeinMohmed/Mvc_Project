@@ -12,7 +12,7 @@
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
 
-        public List<OrderCoupon> OrderCoupons { get; set; } = new List<OrderCoupon>();
+        public List<OrderCoupon> OrderCoupons { get; set; }
     }
 
 }
