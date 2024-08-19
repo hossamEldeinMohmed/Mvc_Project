@@ -7,7 +7,7 @@
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
 
-        public List<ProductTagMapping> ProductTagMappings { get; set; } = new List<ProductTagMapping>();
+        public List<ProductTagMapping> ProductTagMappings { get; set; } 
     }
 
 }

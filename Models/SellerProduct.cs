@@ -5,9 +5,8 @@ namespace Mvc_Project.Models
     public class SellerProduct
     {
         public int Id { get; set; }
-        [ForeignKey("Merchant")]
-        public int MerchantId { get; set; }
-        public Merchant Merchant { get; set; }
+      
+        
         [ForeignKey("Product")]
         public int ProductId { get; set; }
         public Product Product { get; set; }

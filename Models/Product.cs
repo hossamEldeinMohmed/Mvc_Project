@@ -10,17 +10,20 @@ namespace Mvc_Project.Models
         public string Description { get; set; }
         [ForeignKey("Category")]
         public int CategoryId { get; set; }
+
         public Category Category { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         public decimal Price { get; set; }
-        public List<ProductAttribute> ProductAttributes { get; set; } = new List<ProductAttribute>();
-        public List<SellerProduct> SellerProducts { get; set; } = new List<SellerProduct>();
-        public List<ProductReview> ProductReviews { get; set; } = new List<ProductReview>();
-        public List<ProductQuestion> ProductQuestions { get; set; } = new List<ProductQuestion>();
-        public List<ProductTagMapping> ProductTagMappings { get; set; } = new List<ProductTagMapping>();
-        public List<WishlistItem> WishlistItems { get; set; } = new List<WishlistItem>();
-        public List<CartItem> CartItems { get; set; } = new List<CartItem>();
+        public List<ProductAttribute> ProductAttributes { get; set; } 
+        public List<SellerProduct> SellerProducts { get; set; } 
+        public List<ProductReview> ProductReviews { get; set; } 
+        public List<ProductQuestion> ProductQuestions { get; set; }
+        public List<ProductTagMapping> ProductTagMappings { get; set; } 
+        public List<WishlistItem> WishlistItems { get; set; } 
+        public List<CartItem> CartItems { get; set; } 
+
+        public List<string> ProductImges { get; set; }
     }
 
 }

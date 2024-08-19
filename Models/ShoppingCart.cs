@@ -13,7 +13,7 @@ namespace Mvc_Project.Models
         public DateTime UpdatedAt { get; set; }
         public DateTime? ClosedAt { get; set; }
 
-        public List<CartItem> CartItems { get; set; } = new List<CartItem>();
+        public List<CartItem> CartItems { get; set; }
     }
 
 }

@@ -22,9 +22,9 @@ namespace Mvc_Project.Models
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
 
-        public List<OrderStatusHistory> OrderStatusHistories { get; set; } = new List<OrderStatusHistory>();
-        public List<OrderPayment> OrderPayments { get; set; } = new List<OrderPayment>();
-        public List<OrderCoupon> OrderCoupons { get; set; } = new List<OrderCoupon>();
+        public List<OrderStatusHistory> OrderStatusHistories { get; set; }
+        public List<OrderPayment> OrderPayments { get; set; }
+        public List<OrderCoupon> OrderCoupons { get; set; } 
         public ShipmentDetail ShipmentDetail { get; set; }
     }
 
