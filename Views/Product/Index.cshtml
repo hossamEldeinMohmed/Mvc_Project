@@ -4,9 +4,71 @@
     Layout = "_AddLayout";
 }
 
+<style>
+    body {
+        font-family: 'Roboto', sans-serif;
+        background-color: #f4f6f9;
+    }
+
+    h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #343a40;
+        margin-bottom: 1.5rem;
+    }
+
+    .btn-primary, .btn-info, .btn-warning, .btn-danger, .btn-dark {
+        border-radius: 0.25rem;
+        font-size: 1rem;
+    }
+
+    .btn-primary:hover, .btn-info:hover, .btn-warning:hover, .btn-danger:hover, .btn-dark:hover {
+        opacity: 0.8;
+    }
+
+    .table th, .table td {
+        vertical-align: middle;
+        font-size: 1.125rem;
+    }
+
+    .table thead th {
+        border-bottom: 2px solid #dee2e6;
+    }
+
+    .table tbody tr:hover {
+        background-color: #f1f3f5;
+    }
+
+    .table-actions .btn {
+        margin-right: 0.5rem;
+    }
+
+    .search-form {
+        max-width: 400px;
+        margin-bottom: 1.5rem;
+    }
+
+    .search-form input[type="search"] {
+        border-radius: 0.25rem 0 0 0.25rem;
+        border-right: 0;
+    }
+
+    .search-form button {
+        border-radius: 0 0.25rem 0.25rem 0;
+    }
+
+    .add-product-link {
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+    }
+</style>
+
 <h1>Product Index</h1>
+
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-6 search-form">
         <form class="d-flex" asp-action="Index" asp-controller="Product">
             <input name="searchString" class="form-control me-1" type="search" placeholder="Search" aria-label="Search"/>
             <button class="btn btn-dark" type="submit">Search</button>
@@ -14,11 +76,11 @@
     </div>
 </div>
 
-<p>
-    <a asp-action="Add" style="text-align:center; display:flex; justify-content:center ; justify-items:center" class="btn btn-primary">Add New Product</a>
-</p>
+<div class="add-product-link">
+    <a asp-action="Add" class="btn btn-primary">Add New Product</a>
+</div>
 
- <table class="table">
+<table class="table">
     <thead>
         <tr>
             <th>Name</th>
@@ -36,7 +98,7 @@
                 <td>@product.Description</td>
                 <td>@product.Category.Name</td>
                 <td>@product.Price.ToString("C")</td>
-                <td>
+                <td class="table-actions">
                     <a asp-action="Details" asp-route-id="@product.Id" class="btn btn-info">Details</a>
                     <a asp-action="Edit" asp-route-id="@product.Id" class="btn btn-warning">Edit</a>
                     <a asp-action="Delete" asp-route-id="@product.Id" class="btn btn-danger">Delete</a>
