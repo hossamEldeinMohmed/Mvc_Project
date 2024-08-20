@@ -16,9 +16,14 @@ namespace Mvc_Project.Controllers
         }
 
 
-        public IActionResult Index()
+        public IActionResult Index(string searchString)
         {
+            searchString = String.IsNullOrEmpty(searchString)?"": searchString.ToLower();
             var products = _productRepository.GetAll();
+            if(!String.IsNullOrEmpty(searchString))
+            {
+                products = products.Where(p => (p.Name).ToLower().Contains(searchString)).ToList();
+            }
             return View(products);
         }
 
