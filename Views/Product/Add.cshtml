@@ -1,4 +1,4 @@
-﻿@model Product
+﻿@model Mvc_Project.Models.ViewModels.ProductViewModel
 
 @{
     ViewData["Title"] = "Add Product";
@@ -6,11 +6,9 @@
 }
 
 <style>
-    
-
     body {
         font-family: 'Roboto', sans-serif;
-        background-color: #f4f6f9; 
+        background-color: #f4f6f9;
     }
 
     .container {
@@ -28,14 +26,14 @@
     .product-form {
         background-color: #ffffff;
         border: 1px solid #dee2e6;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); 
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         padding: 2rem;
         border-radius: 0.5rem;
     }
 
     .form-label {
         font-size: 1.1rem;
-        color: #495057; 
+        color: #495057;
         font-weight: 500;
     }
 
@@ -46,7 +44,7 @@
     .form-control-lg {
         font-size: 1.125rem;
         padding: 0.75rem 1.25rem;
-        border: 1px solid #ced4da; 
+        border: 1px solid #ced4da;
     }
 
     .form-group {
@@ -55,27 +53,27 @@
 
     .btn-primary {
         background-color: #007bff;
-        border-color: #007bff; 
+        border-color: #007bff;
     }
 
-        .btn-primary:hover {
-            background-color: #0056b3;
-            border-color: #004085; 
-        }
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #004085;
+    }
 
     .btn-secondary {
-        background-color: #6c757d; 
-        border-color: #6c757d; 
+        background-color: #6c757d;
+        border-color: #6c757d;
     }
 
-        .btn-secondary:hover {
-            background-color: #5a6268; 
-            border-color: #545b62; 
-        }
+    .btn-secondary:hover {
+        background-color: #5a6268;
+        border-color: #545b62;
+    }
 
     .text-danger {
         font-size: 0.875rem;
-        color: #dc3545; 
+        color: #dc3545;
     }
 
     .mb-4 {
@@ -90,7 +88,7 @@
         margin-top: 1rem;
     }
 
-    .border{
+    .border {
         border-color: gray !important;
     }
 </style>
@@ -98,7 +96,7 @@
 <div class="container">
     <h1 class="text mb-4">Add Your Product</h1>
 
-    <form asp-action="Add" method="post" class="product-form">
+    <form asp-action="Add" method="post" class="product-form" enctype="multipart/form-data">
         <div class="form-group mb-3">
             <label asp-for="Name" class="form-label"></label>
             <input asp-for="Name" class="form-control form-control-lg border" />
@@ -113,9 +111,10 @@
 
         <div class="form-group mb-3">
             <label asp-for="CategoryId" class="form-label"></label>
-            <select asp-for="CategoryId" asp-items="ViewBag.CategoryList" class="form-select form-select-lg border">
+            <select asp-for="CategoryId" asp-items="Model.CategoryList" class="form-select form-select-lg border">
                 <option value="">Select a category</option>
             </select>
+
             <span asp-validation-for="CategoryId" class="text-danger"></span>
         </div>
 
@@ -126,9 +125,15 @@
         </div>
 
         <div class="form-group mb-3">
-            <input type="submit" value="Add Product" class="btn site-btn btn-lg w-100" />
+            <label for="ProductImges" class="form-label">Product Images</label>
+            <input type="file" id="ProductImges" name="ProductImges" class="form-control" multiple />
+            <span asp-validation-for="ProductImages" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <input type="submit" value="Add Product" class="btn btn-primary btn-lg w-100" />
         </div>
     </form>
 
-    <a asp-action="Index" class="btn site-btn mt-3">Back to List</a>
+    <a asp-action="Index" class="btn btn-secondary mt-3">Back to List</a>
 </div>

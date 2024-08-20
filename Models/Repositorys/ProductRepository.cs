@@ -16,10 +16,12 @@ namespace Mvc_Project.Models.Repositorys
 
         public List<Product> GetAll()
         {
-            return _context.Products.Include(p => p.Category).ToList();
-            
+            return _context.Products
+                .Include(p => p.Category)
+                .Include(p => p.ProductAttributes)
+                .Include(p => p.ProductReviews)
+                .ToList();
         }
-
         public Product GetByID(int id)
         {
             return _context.Products
@@ -28,6 +30,8 @@ namespace Mvc_Project.Models.Repositorys
                 .Include(p => p.ProductReviews)
                 .FirstOrDefault(p => p.Id == id);
         }
+
+       
 
         public void Add(Product newProduct)
         {
@@ -58,6 +62,8 @@ namespace Mvc_Project.Models.Repositorys
                 .Include(p => p.Category)
                 .ToList();
         }
+       
+
 
         public List<Product> SearchProducts(string searchTerm)
         {
@@ -65,6 +71,10 @@ namespace Mvc_Project.Models.Repositorys
                 .Where(p => p.Name.Contains(searchTerm) || p.Description.Contains(searchTerm))
                 .Include(p => p.Category)
                 .ToList();
+        }
+        public List<Category> GetAllCategories()
+        {
+            return _context.Categories.ToList();
         }
     }
 }
