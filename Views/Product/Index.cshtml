@@ -1,10 +1,19 @@
 ﻿@model List<Product>
 @{
     ViewData["Title"] = "Products";
-    Layout = "_HomeLayout";
+    Layout = "_AddLayout";
 }
 
-@*
+<h1>Product Index</h1>
+<div class="row">
+    <div class="col-md-6">
+        <form class="d-flex" asp-action="Index" asp-controller="Product">
+            <input name="searchString" class="form-control me-1" type="search" placeholder="Search" aria-label="Search"/>
+            <button class="btn btn-dark" type="submit">Search</button>
+        </form>
+    </div>
+</div>
+
 <p>
     <a asp-action="Add" style="text-align:center; display:flex; justify-content:center ; justify-items:center" class="btn btn-primary">Add New Product</a>
 </p>
@@ -35,4 +44,4 @@
             </tr>
         }
     </tbody>
-</table> *@
+</table>

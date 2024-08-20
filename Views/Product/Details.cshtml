@@ -1,23 +1,46 @@
-﻿@model Product
+﻿@model Mvc_Project.Models.ViewModels.ProductViewModel
+
 @{
-    ViewData["Title"] = "Product with details";
+    ViewData["Title"] = "Product Details";
     Layout = "_AddLayout";
 }
-<h1>Product Details</h1>
 
-<div>
-    <h4>@Model.Name</h4>
-    <dl class="row">
-        <dt class="col-sm-2">Description</dt>
-        <dd class="col-sm-10">@Model.Description</dd>
+<div class="container">
+    <h1 class="text mb-4">Product Details</h1>
 
-        <dt class="col-sm-2">Category</dt>
-        <dd class="col-sm-10">@Model.Category.Name</dd>
+    <div class="product-details">
+        <div class="form-group mb-3">
+            <label class="form-label">Name</label>
+            <p class="form-control-plaintext">@Model.Name</p>
+        </div>
 
-        <dt class="col-sm-2">Price</dt>
-        <dd class="col-sm-10">@Model.Price.ToString("C")</dd>
-    </dl>
-</div>
+        <div class="form-group mb-3">
+            <label class="form-label">Description</label>
+            <p class="form-control-plaintext">@Model.Description</p>
+        </div>
+
+        <div class="form-group mb-3">
+            <label class="form-label">Category</label>
+            <p class="form-control-plaintext">@Model.CategoryName</p>
+        </div>
+
+        <div class="form-group mb-3">
+            <label class="form-label">Price</label>
+            <p class="form-control-plaintext">@Model.Price.ToString("C")</p>
+        </div>
+
+        @if (Model.ProductImages != null && Model.ProductImages.Any())
+        {
+            <div class="form-group mb-3">
+                <label class="form-label">Images</label>
+                <div class="product-images">
+                    @foreach (var image in Model.ProductImages)
+                    {
+                        <img src="@Url.Content("~/images/" + image)" alt="Product Image" class="img-fluid" style="max-width: 200px; margin-right: 10px;" />
+                    }
+                </div>
+            </div>
+        }
 
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
