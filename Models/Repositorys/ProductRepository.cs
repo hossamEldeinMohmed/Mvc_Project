@@ -22,6 +22,15 @@ namespace Mvc_Project.Models.Repositorys
                 .Include(p => p.ProductReviews)
                 .ToList();
         }
+        public List<Product> GetAllRandomly()
+        {
+            return _context.Products
+                .Include(p => p.Category)
+                .Include(p => p.ProductAttributes)
+                .Include(p => p.ProductReviews)
+                .OrderBy(p => Guid.NewGuid())  // Randomly sort the products
+                .ToList();
+        }
         public Product GetByID(int id)
         {
             return _context.Products
@@ -76,5 +85,7 @@ namespace Mvc_Project.Models.Repositorys
         {
             return _context.Categories.ToList();
         }
+
+
     }
 }

@@ -33,7 +33,7 @@ namespace Mvc_Project.Controllers
                 return View("AccessoriesAndMakeUp");
 
             }
-            return View("index");
+            return View("Index");
 
         }
     }

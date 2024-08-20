@@ -13,8 +13,11 @@ namespace Mvc_Project.Controllers
             _logger = logger;
         }
 
+    //product controller injection
         public IActionResult Index()
         {
+
+
             return View();
         }
 
