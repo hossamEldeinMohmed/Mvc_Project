@@ -1,23 +1,26 @@
 using Microsoft.AspNetCore.Mvc;
 using Mvc_Project.Models;
+using Mvc_Project.Models.Repositorys.Mvc_Project.Models.Repositorys;
 using System.Diagnostics;
 
 namespace Mvc_Project.Controllers
 {
     public class HomeController : Controller
     {
+        IProductRepository _productRepository;
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger , IProductRepository productRepo)
         {
             _logger = logger;
+            _productRepository = productRepo;
         }
 
-    //product controller injection
+
+      
         public IActionResult Index()
         {
 
-
+            var products = _productRepository.GetAllRandomly();
             return View();
         }
 
