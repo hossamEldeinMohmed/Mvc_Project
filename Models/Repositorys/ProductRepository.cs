@@ -18,8 +18,6 @@ namespace Mvc_Project.Models.Repositorys
         {
             return _context.Products
                 .Include(p => p.Category)
-                .Include(p => p.ProductAttributes)
-                .Include(p => p.ProductReviews)
                 .ToList();
         }
         public List<Product> GetAllRandomly()
