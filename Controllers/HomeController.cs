@@ -20,8 +20,8 @@ namespace Mvc_Project.Controllers
         public IActionResult Index()
         {
 
-            var products = _productRepository.GetAllRandomly();
-            return View();
+            var AllProducts = _productRepository.GetAllRandomly();
+            return View(AllProducts);
         }
 
         public IActionResult Privacy()

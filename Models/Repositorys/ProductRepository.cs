@@ -25,7 +25,7 @@ namespace Mvc_Project.Models.Repositorys
         public List<Product> GetAllRandomly()
         {
             return _context.Products
-                .Include(p => p.Category)
+                .Include(p => p.Category)                
                 .Include(p => p.ProductAttributes)
                 .Include(p => p.ProductReviews)
                 .OrderBy(p => Guid.NewGuid())  // Randomly sort the products
