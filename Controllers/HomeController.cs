@@ -20,7 +20,7 @@ namespace Mvc_Project.Controllers
         public IActionResult Index()
         {
 
-
+            var products = _productRepository.GetAllRandomly();
             return View();
         }
 
