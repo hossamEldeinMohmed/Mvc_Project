@@ -56,12 +56,10 @@
         border-color: #007bff;
     }
 
-    .btn-primary:hover {
-        background-color: #0056b3;
-        border-color: #004085;
-    }
-
-   
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
 
     .btn-secondary:hover {
         background-color: #5a6268;
@@ -88,6 +86,41 @@
     .border {
         border-color: gray !important;
     }
+
+    /* Drag and Drop Styles */
+    .upload_dropZone {
+        color: #0f3c4b;
+        background-color: var(--colorPrimaryPale, #c8dadf);
+        outline: 2px dashed var(--colorPrimaryHalf, #c1ddef);
+        outline-offset: -12px;
+        transition: outline-offset 0.2s ease-out, outline-color 0.3s ease-in-out, background-color 0.2s ease-out;
+    }
+
+        .upload_dropZone.highlight {
+            outline-offset: -4px;
+            outline-color: var(--colorPrimaryNormal, #0576bd);
+            background-color: var(--colorPrimaryEighth, #c8dadf);
+        }
+
+    .upload_svg {
+        fill: var(--colorPrimaryNormal, #0576bd);
+    }
+
+    .btn-upload {
+        color: #fff;
+        background-color: var(--colorPrimaryNormal);
+    }
+
+        .btn-upload:hover,
+        .btn-upload:focus {
+            color: #fff;
+            background-color: var(--colorPrimaryGlare);
+        }
+
+    .upload_img {
+        width: calc(33.333% - (2rem / 3));
+        object-fit: contain;
+    }
 </style>
 
 <div class="container">
@@ -111,7 +144,6 @@
             <select asp-for="CategoryId" asp-items="Model.CategoryList" class="form-select form-select-lg border">
                 <option value="">Select a category</option>
             </select>
-
             <span asp-validation-for="CategoryId" class="text-danger"></span>
         </div>
 
@@ -121,11 +153,22 @@
             <span asp-validation-for="Price" class="text-danger"></span>
         </div>
 
-        <div class="form-group mb-3">
-            <label for="ProductImges" class="form-label">Product Images</label>
-            <input type="file" id="ProductImges" name="ProductImges" class="form-control" multiple />
-            <span asp-validation-for="ProductImages" class="text-danger"></span>
-        </div>
+        <!-- Drag and Drop File Upload -->
+        <fieldset class="upload_dropZone text-center mb-3 p-4">
+            <legend class="visually-hidden">Product Images</legend>
+
+            <svg class="upload_svg" width="60" height="60" aria-hidden="true">
+                <use href="#icon-imageUpload"></use>
+            </svg>
+
+            <p class="small my-2">Drag & Drop product image(s) inside dashed region<br><i>or</i></p>
+
+            <input id="upload_image_product" name="ProductImages" class="position-absolute invisible" type="file" multiple accept="image/jpeg, image/png, image/svg+xml" />
+
+            <label class="btn btn-upload mb-3" for="upload_image_product">Choose file(s)</label>
+
+            <div class="upload_gallery d-flex flex-wrap justify-content-center gap-3 mb-0"></div>
+        </fieldset>
 
         <div class="form-group mb-3">
             <input type="submit" value="Add Product" class="btn site-btn btn-lg w-100" />
@@ -134,3 +177,54 @@
 
     <a asp-controller="Home" asp-action="Index" class="btn site-btn mt-3">Cancel</a>
 </div>
+
+<!-- SVG Icon Definition -->
+<svg style="display:none">
+    <defs>
+        <symbol id="icon-imageUpload" clip-rule="evenodd" viewBox="0 0 96 96">
+            <path d="M47 6a21 21 0 0 0-12.3 3.8c-2.7 2.1-4.4 5-4.7 7.1-5.8 1.2-10.3 5.6-10.3 10.6 0 6 5.8 11 13 11h12.6V22.7l-7.1 6.8c-.4.3-.9.5-1.4.5-1 0-2-.8-2-1.7 0-.4.3-.9.6-1.2l10.3-8.8c.3-.4.8-.6 1.3-.6.6 0 1 .2 1.4.6l10.2 8.8c.4.3.6.8.6 1.2 0 1-.9 1.7-2 1.7-.5 0-1-.2-1.3-.5l-7.2-6.8v15.6h14.4c6.1 0 11.2-4.1 11.2-9.4 0-5-4-8.8-9.5-9.4C63.8 11.8 56 5.8 47 6Zm-1.7 42.7V38.4h3.4v10.3c0 .8-.7 1.5-1.7 1.5s-1.7-.7-1.7-1.5Z M27 49c-4 0-7 2-7 6v29c0 3 3 6 6 6h42c3 0 6-3 6-6V55c0-4-3-6-7-6H28Zm41 3c1 0 3 1 3 3v19l-13-6a2 2 0 0 0-2 0L44 79l-10-5a2 2 0 0 0-2 0l-9 7V55c0-2 2-3 4-3h41Z M40 62c0 2-2 4-5 4s-5-2-5-4 2-4 5-4 5 2 5 4Z" />
+        </symbol>
+    </defs>
+</svg>
+
+<script>
+    (function() {
+        const input = document.getElementById('upload_image_product');
+        const gallery = document.querySelector('.upload_gallery');
+        const dropZone = document.querySelector('.upload_dropZone');
+
+        const showFiles = (files) => {
+            if (gallery) {
+                gallery.innerHTML = '';
+                files.forEach(file => {
+                    const img = document.createElement('img');
+                    img.classList.add('upload_img');
+                    img.src = URL.createObjectURL(file);
+                    img.onload = () => URL.revokeObjectURL(img.src);
+                    gallery.appendChild(img);
+                });
+            }
+        };
+
+        input.addEventListener('change', (e) => {
+            showFiles([...e.target.files]);
+        });
+
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('highlight');
+        });
+
+        dropZone.addEventListener('dragleave', (e) => {
+            dropZone.classList.remove('highlight');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('highlight');
+            const files = [...e.dataTransfer.files];
+            input.files = e.dataTransfer.files;
+            showFiles(files);
+        });
+    })();
+</script>
