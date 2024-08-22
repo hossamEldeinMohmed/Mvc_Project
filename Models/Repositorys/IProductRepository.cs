@@ -8,6 +8,7 @@
             List<Product> SearchProducts(string searchTerm);
             List<Category> GetAllCategories();
             List<Product> GetAllRandomly();
+       
 
 
 

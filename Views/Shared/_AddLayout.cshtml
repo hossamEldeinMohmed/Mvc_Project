@@ -72,20 +72,20 @@
                 <div class="col-xl-6 col-lg-7">
                     <nav class="header__menu">
                         <ul>
-                            <li class="active"><a asp-controller="Home" asp-action="Index">Home</a></li>
-                            <li>
+                            <li ><a asp-controller="Home" asp-action="Index">Home</a></li>
+                            <li >
                                 <a href="#">Women’s</a>
                                 <ul class="dropdown">
-                                    <li><a href="/Catgory/showCatgory/1">Dresses</a></li>
-                                    <li><a href="/Catgory/showCatgory/2">Tops</a></li>
-                                    <li><a href="/Catgory/showCatgory/3">Bottoms</a></li>
-                                    <li><a href="/Catgory/showCatgory/4">Shoes</a></li>
-                                    <li><a href="/Catgory/showCatgory/5">Accessories & MakeUp</a></li>
+                                    <li><a asp-controller="Category" asp-action="Dresses">Dresses</a></li>
+                                    <li><a asp-controller="Category" asp-action="Tops">Tops</a></li>
+                                    <li><a asp-controller="Category" asp-action="Bottoms">Bottoms</a></li>
+                                    <li><a asp-controller="Category" asp-action="Shoes">Shoes</a></li>
+                                    <li><a asp-controller="Category" asp-action="AccessoriesAndMakeUp">Accessories & MakeUp</a></li>
                                 </ul>
                             </li>
                             
                             <li><a href="#">Contact</a></li>
-                            <li><a asp-controller="Product" asp-action="Add">Add New Product</a></li>
+                            <li class="active"><a asp-controller="Product" asp-action="Add">Add New Product</a></li>
                         </ul>
                     </nav>
                 </div>

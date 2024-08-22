@@ -40,7 +40,15 @@ namespace Mvc_Project.Models.Repositorys
                 .FirstOrDefault(p => p.Id == id);
         }
 
-       
+       //public List<Product> showCategory(int id)
+       // {
+       //     return _context.Products
+       //          .Include(p => p.Category)
+       //          .Include(p => p.ProductAttributes)
+       //          .Include(p => p.ProductReviews)
+       //          .Where(p => p.CategoryId == id)  // filtered by category id
+       //          .ToList();
+       // }
 
         public void Add(Product newProduct)
         {
