@@ -2,7 +2,7 @@
 
 namespace Mvc_Project.Models
 {
-    public class Role : IdentityRole<int>
+    public class Role 
     {
         public int Id { get; set; }
         public string RoleName { get; set; }

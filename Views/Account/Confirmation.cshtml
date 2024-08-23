@@ -1,0 +1,39 @@
+﻿@{
+    ViewData["Title"] = "Confirmation";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+@if (ViewBag.IsEmailConfirmed != null && ViewBag.IsEmailConfirmed)
+{
+    <div class="alert alert-success">
+        <p>Your email has been confirmed successfully. You will be redirected to the login page shortly.</p>
+        <p>If you are not redirected automatically, <a href="@Url.Action("Login", "Account")">click here</a> to go to the login page.</p>
+    </div>
+
+    <script type="text/javascript">
+        setTimeout(function () {
+            window.location.href = "@Url.Action("Login", "Account")";
+        }, 3000);
+    </script>
+}
+else if (ViewBag.IsEmailConfirmed != null && !ViewBag.IsEmailConfirmed)
+{
+    <div class="alert alert-danger">
+        <p>There was a problem confirming your email. Please try again.</p>
+    </div>
+}
+else if (ViewBag.ResendLink != null)
+{
+    <div class="alert alert-info">
+        <p>@ViewBag.ResendLink</p>
+        <p>If you did not receive the email, <a href="@Url.Action("ConfirmOrResendEmail", "Account", new { userId = ViewBag.UserId })">click here</a> to resend it.</p>
+    </div>
+}
+else
+{
+    <div class="alert alert-warning">
+        <p>Go to your Gmail and confirm your email. If you do not find the message, please check your spam folder.</p>
+        <p>If you did not receive the email, <a href="@Url.Action("ConfirmOrResendEmail", "Account", new { userId = ViewBag.UserId })">click here</a> to resend it.</p>
+    </div>
+}

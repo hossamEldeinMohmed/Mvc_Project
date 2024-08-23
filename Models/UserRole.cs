@@ -1,9 +1,10 @@
 ﻿namespace Mvc_Project.Models
 {
+    using Microsoft.AspNetCore.Identity;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    public class UserRole
+    public class UserRole 
     {
         [Key]
         public int Id { get; set; }

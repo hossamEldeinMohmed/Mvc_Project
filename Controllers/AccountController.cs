@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Mvc_Project.Models;
 
 namespace Mvc_Project.Controllers
@@ -8,17 +10,21 @@ namespace Mvc_Project.Controllers
     {
         private readonly UserManager<User> userManager;
         private readonly SignInManager<User> signInManager;
+        private readonly RoleManager<IdentityRole<int>> roleManager;
+        private readonly IEmailSender emailSender;
 
-        public AccountController(UserManager<User> userManager,SignInManager<User> signInManager)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, RoleManager<IdentityRole<int>> roleManager,IEmailSender emailSender)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.roleManager = roleManager;
+            this.emailSender = emailSender;
         }
 
         [HttpGet]
         public IActionResult Register()
         {
-            
+
             return View("Register");
         }
 
@@ -26,35 +32,199 @@ namespace Mvc_Project.Controllers
         public async Task<IActionResult> SaveRegister(RegisterUserViewModel DataFromRequst) {
             if (ModelState.IsValid)
             {
+
+                var existingUserName = await userManager.FindByNameAsync(DataFromRequst.UserName);
+                if (existingUserName != null)
+                {
+                    ModelState.AddModelError("", "Username already exists.");
+                    return View("Register", DataFromRequst);
+                }
+
+             
+                var existingEmail = await userManager.FindByEmailAsync(DataFromRequst.Email);
+                if (existingEmail != null)
+                {
+                    ModelState.AddModelError("", "Email already exists.");
+                    return View("Register", DataFromRequst);
+                }
+
+                var existingPhoneNumber = await userManager.Users
+                    .AnyAsync(u => u.PhoneNumber == DataFromRequst.PhoneNumber);
+                if (existingPhoneNumber)
+                {
+                    ModelState.AddModelError("", "Phone number already exists.");
+                    return View("Register", DataFromRequst);
+                }
                 User userToDb = new User();
 
                 userToDb.UserName = DataFromRequst.UserName;
                 userToDb.PasswordHash = DataFromRequst.Password;
                 userToDb.Email = DataFromRequst.Email;
                 userToDb.PhoneNumber = DataFromRequst.PhoneNumber;
+                userToDb.CreatedAt = DateTime.UtcNow;   
 
                 //saving in DB
-                var Resalt = await userManager.CreateAsync(userToDb);
+                //passward Hasing
+                var Resalt = await userManager.CreateAsync(userToDb, DataFromRequst.Password);
 
-                if (Resalt.Succeeded && DataFromRequst.RememberMe)
+                if (Resalt.Succeeded)
                 {
-                    //make cookie
+                    await userManager.AddToRoleAsync(userToDb, "vendor");
 
-                 await signInManager.SignInAsync(userToDb,false);
+                    var confirmationToken = await userManager.GenerateEmailConfirmationTokenAsync(userToDb);
+                    await SendConfirmationEmailAsync(userToDb, confirmationToken);
 
-                    return RedirectToAction("Register");
+
+                   /* //make cookie
+
+                    await signInManager.SignInAsync(userToDb, false);*/
+
+                    return RedirectToAction("RegisterConfirmation", "Account");
 
                 }
 
                 foreach (var item in Resalt.Errors)
                 {
 
-                    ModelState.AddModelError("",item.Description);
+                    ModelState.AddModelError("", item.Description);
                 }
             }
 
-            return View("Register" , DataFromRequst);
+            
+            return View("Register", DataFromRequst);
+
+        }
+
+
+        public IActionResult Login()
+        {
+            return View("Login");
+
+        }
+
+        [HttpPost]
+        public async Task< IActionResult> SaveLogin(LoginUserViewModel UserLoginFromRequst)
+        {
+
+            if (ModelState.IsValid)
+            {
+
+             User UserFromDB =   await userManager.FindByEmailAsync(UserLoginFromRequst.Identifier);
+                
+
+                if (UserFromDB == null)
+                {
+                    UserFromDB = await userManager.FindByNameAsync(UserLoginFromRequst.Identifier);
+                }
+                if (UserFromDB != null)
+                {
+                  bool Found = await userManager.CheckPasswordAsync(UserFromDB, UserLoginFromRequst.Password);
+                    if (Found)
+                    {
+
+                      await   signInManager.SignInAsync(UserFromDB, UserLoginFromRequst.RememberMe);
+                        return RedirectToAction();
+                    }
+
+                }
+
+                ModelState.AddModelError("", "User Email / User Name or Password Wrong");
 
             }
+            return View("Login",UserLoginFromRequst);
+        }
+
+
+        public async Task<IActionResult>ConfirmEmail(string userId, string token)
+        {
+            if(userId == null || token == null)
+            {
+                return View("Error");
+            }
+
+            var user = await userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return NotFound($"Unable to load user with ID '{userId}'.");
+            }
+            var result = await userManager.ConfirmEmailAsync(user, token);
+            if (result.Succeeded)
+            {
+                ViewBag.IsEmailConfirmed = true;
+
+                
+                ViewBag.RedirectUrl = Url.Action("Login", "Account");
+
+                return View("Confirmation");
+            }
+
+            ViewBag.IsEmailConfirmed = false;
+            return View("Confirmation");
+        }
+
+        public async Task<IActionResult> ConfirmOrResendEmail(string userId, string token = null)
+        {
+            if (userId == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            var user = await userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return NotFound($"Unable to load user with ID '{userId}'.");
+            }
+
+            if (token != null) 
+            {
+                var result = await userManager.ConfirmEmailAsync(user, token);
+                if (result.Succeeded)
+                {
+                    ViewBag.IsEmailConfirmed = true;
+                    return View("Confirmation");
+                }
+                else
+                {
+                    ViewBag.IsEmailConfirmed = false;
+                    return View("Confirmation");
+                }
+            }
+            else 
+            {
+                var confirmationToken = await userManager.GenerateEmailConfirmationTokenAsync(user);
+                await SendConfirmationEmailAsync(user, confirmationToken);
+
+                ViewBag.UserId = user.Id;
+                ViewBag.ResendLink = "A new confirmation email has been sent. Please check your inbox.";
+
+                return View("Confirmation");
+            }
+        }
+
+     
+        public IActionResult RegisterConfirmation(string userId)
+        {
+            ViewBag.UserId = userId;
+            return View("Confirmation");
+        }
+
+        private async Task SendConfirmationEmailAsync(User user, string token)
+        {
+            var confirmationLink = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, token = token }, Request.Scheme);
+
+            var emailSubject = "Please Confirm Your Email";
+            var emailBody = $@"
+        <h2>Hello {user.UserName},</h2>
+        <p>Thank you for registering with us. Please confirm your email address by clicking the link below:</p>
+        <p><a href='{confirmationLink}'>Confirm your email</a></p>
+        <p>If you did not create an account, no further action is required.</p>
+        <p>Best regards,<br/> Cloth Carousel Team</p>";
+
+            await emailSender.SendEmailAsync(user.Email, emailSubject, emailBody);
+        }
+
+
+
+
     }
 }

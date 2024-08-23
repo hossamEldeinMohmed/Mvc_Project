@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Mvc_Project.Models
 {
-    public class Context: IdentityDbContext<User,IdentityRole<int>,int>
+    public class Context: IdentityDbContext<User, IdentityRole<int>,int>
     {
         public Context() : base() { }
 
         public DbSet<User> Users { get; set; }
-        public DbSet<Role> Roles { get; set; }
-        public DbSet<UserRole> UserRoles { get; set; }
+        /*public DbSet<Role> Roles { get; set; }
+        public DbSet<UserRole> UserRoles { get; set; }*/
       
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
@@ -37,5 +37,8 @@ namespace Mvc_Project.Models
         {
 
         }
+
+       
+
     }
 }

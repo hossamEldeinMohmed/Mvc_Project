@@ -16,6 +16,7 @@ namespace Mvc_Project.Models
         public string ConfirmPassword { get; set; }
 
 
+        [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
 
@@ -25,7 +26,7 @@ namespace Mvc_Project.Models
 
         public string PhoneNumber { get; set; }
 
-        public bool RememberMe { get; set; }
+       
 
 
     }

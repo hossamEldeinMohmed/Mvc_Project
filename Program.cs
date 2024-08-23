@@ -3,6 +3,7 @@ using Mvc_Project.Models.Repositorys;
 using Mvc_Project.Models;
 using Mvc_Project.Models.Repositorys.Mvc_Project.Models.Repositorys;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace Mvc_Project
 {
@@ -24,12 +25,31 @@ namespace Mvc_Project
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 
+            //////////Email////////////////
+            var emailConfig = builder.Configuration.GetSection("EmailSettings");
 
-            ////////iIdentity///////
             
+            builder.Services.AddTransient<IEmailSender>(sp =>
+                new EmailSenderRepository(
+                    emailConfig["SmtpServer"],
+                    int.Parse(emailConfig["SmtpPort"]),
+                    emailConfig["SmtpUser"],
+                    emailConfig["SmtpPass"]
+                )
+            );
+          
+            ////////////////////////////////
+            ////////iIdentity///////
 
-            builder.Services.AddIdentity<User, IdentityRole<int>>()
-                .AddEntityFrameworkStores<Context>();
+
+            builder.Services.AddIdentity<User,IdentityRole<int>>(options =>
+            {
+
+                options.Tokens.ProviderMap.Add("Default", new TokenProviderDescriptor(typeof(DataProtectorTokenProvider<User>)));
+                options.Tokens.EmailConfirmationTokenProvider = "Default";
+                options.Tokens.PasswordResetTokenProvider = "Default";
+            })
+                .AddEntityFrameworkStores<Context>().AddDefaultTokenProviders(); 
 
             /////////////////////////////////
 
