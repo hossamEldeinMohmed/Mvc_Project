@@ -16,7 +16,7 @@ namespace Mvc_Project.Models
         public DateTime UpdatedAt { get; set; }
         public decimal Price { get; set; }
         [ForeignKey("User")]
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
         public User User { get; set; }
         public List<ProductAttribute> ProductAttributes { get; set; } 
         public List<SellerProduct> SellerProducts { get; set; } 
