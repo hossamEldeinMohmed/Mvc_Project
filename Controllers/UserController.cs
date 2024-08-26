@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Mvc_Project.Models;
 using Mvc_Project.Models.Repositorys;
 
 namespace Mvc_Project.Controllers
 {
+    [Authorize]
     public class UserController : Controller
     {
         private readonly IUserRepository _userRepository;
@@ -22,6 +24,26 @@ namespace Mvc_Project.Controllers
         public IActionResult Details(int id)
         {
             var user = _userRepository.GetByID(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return View(user);
+        }
+
+        public IActionResult UserProfile()
+        {
+            var user = _userRepository.GetByName(User.Identity.Name);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return View(user);
+        }
+        [HttpPost]
+        public IActionResult UserProfile(User user)
+        {
+             _userRepository.Update(user);
             if (user == null)
             {
                 return NotFound();

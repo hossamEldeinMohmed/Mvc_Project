@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Mvc_Project.Models;
 
@@ -11,9 +12,11 @@ using Mvc_Project.Models;
 namespace Mvc_Project.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20240825155933_addLastLoginDate")]
+    partial class addLastLoginDate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -473,6 +476,10 @@ namespace Mvc_Project.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<string>("ProductImges")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
@@ -513,28 +520,6 @@ namespace Mvc_Project.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("ProductAttributes");
-                });
-
-            modelBuilder.Entity("Mvc_Project.Models.ProductImages", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("FileName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("ProductImages");
                 });
 
             modelBuilder.Entity("Mvc_Project.Models.ProductQuestion", b =>
@@ -798,7 +783,7 @@ namespace Mvc_Project.Migrations
                     b.Property<bool>("EmailVerified")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime?>("LastLoginDate")
+                    b.Property<DateTime>("LastLoginDate")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("LockoutEnabled")
@@ -1126,17 +1111,6 @@ namespace Mvc_Project.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("Mvc_Project.Models.ProductImages", b =>
-                {
-                    b.HasOne("Mvc_Project.Models.Product", "Product")
-                        .WithMany("ProductImges")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-                });
-
             modelBuilder.Entity("Mvc_Project.Models.ProductQuestion", b =>
                 {
                     b.HasOne("Mvc_Project.Models.Product", "Product")
@@ -1314,8 +1288,6 @@ namespace Mvc_Project.Migrations
                     b.Navigation("CartItems");
 
                     b.Navigation("ProductAttributes");
-
-                    b.Navigation("ProductImges");
 
                     b.Navigation("ProductQuestions");
 

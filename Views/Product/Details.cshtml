@@ -98,7 +98,7 @@
                 <div class="product-images">
                     @foreach (var image in Model.ProductImages)
                     {
-                        <img src="@Url.Content("~/images/" + image)" alt="Product Image" class="img-fluid" />
+                        <img src="@Url.Content("~/ProductFile/" + image.FileName)" alt="Product Image" class="img-fluid" />
                     }
                 </div>
             </div>

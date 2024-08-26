@@ -20,6 +20,7 @@ namespace Mvc_Project.Models.Repositorys
                 .Include(p => p.Category)
                 .Include(p => p.ProductAttributes)
                 .Include(p => p.ProductReviews)
+                .Include(P =>P.ProductImges)
                 .ToList();
         }
         public List<Product> GetAllRandomly()
@@ -37,6 +38,7 @@ namespace Mvc_Project.Models.Repositorys
                 .Include(p => p.Category)
                 .Include(p => p.ProductAttributes)
                 .Include(p => p.ProductReviews)
+                .Include(P=>P.ProductImges)
                 .FirstOrDefault(p => p.Id == id);
         }
 

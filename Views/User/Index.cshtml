@@ -1,0 +1,42 @@
+﻿@model List<User>
+
+
+
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="box">
+            <!-- /.box-header -->
+            <div class="box-body">
+                <table id="accounts" class="table table-bordered ">
+                    <thead>
+                        <tr>
+                            <th>User Name</th>
+                            <th>Email</th>
+                            <th>Last Login Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                       @foreach (var user in @Model)
+                        {
+                           
+                                <tr>
+                                  
+                                    <td>
+                                       @user.UserName
+                                    </td>
+                                    <td>
+                       @user.Email
+
+                                    </td>
+                                <td>
+                                    @user.LastLoginDate
+
+                                </td>
+                                </tr>
+                            
+                        }
+                    </tbody>
+                </table>
+            </div>

@@ -33,6 +33,7 @@ namespace Mvc_Project.Models
         public DbSet<AuditLog> AuditLogs { get; set; }
         public DbSet<ProductQuestion> ProductQuestions { get; set; }
         public DbSet<UserPreference> UserPreferences { get; set; }
+        public DbSet<ProductImages>ProductImages { get; set; }
         public Context(DbContextOptions<Context> options) : base(options)
         {
 
