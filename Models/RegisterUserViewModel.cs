@@ -24,6 +24,7 @@ namespace Mvc_Project.Models
         [Display(Name = "Confirm Email")]
         public string ConfirmedEmail { get; set; }
 
+        [RegularExpression("^(\\+201|01|00201)[0-2,5]{1}[0-9]{8}",ErrorMessage ="It Must Be Egyptain Number With 11 Number") ]
         public string PhoneNumber { get; set; }
 
        

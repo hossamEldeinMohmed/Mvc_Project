@@ -23,11 +23,11 @@ namespace Mvc_Project.Models
         public List<PaymentMethod>? PaymentMethods { get; set; } 
         public List<UserPreference>? UserPreferences { get; set; }
 
+        public List<Product> Products { get; set; }
 
 
-      
-           
-        
+
+
     }
 
 }

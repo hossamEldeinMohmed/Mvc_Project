@@ -21,9 +21,15 @@ namespace Mvc_Project.Models
         public List<ProductQuestion> ProductQuestions { get; set; }
         public List<ProductTagMapping> ProductTagMappings { get; set; } 
         public List<WishlistItem> WishlistItems { get; set; } 
-        public List<CartItem> CartItems { get; set; } 
+        public List<CartItem> CartItems { get; set; }
+        public string Status { get; set; } = "Pending";
 
         public List<string> ProductImges { get; set; }
+
+
+        [ForeignKey("User")]
+        public int UserId { get; set; } 
+        public User User { get; set; }  
     }
 
 }
