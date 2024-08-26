@@ -8,7 +8,7 @@
     {
         public class UserRepository : IUserRepository
         {
-            private  Context _context;
+            private Context _context;
 
             public UserRepository(Context context)
             {

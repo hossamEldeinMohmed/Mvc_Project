@@ -32,7 +32,7 @@ namespace Mvc_Project.Models.Repositorys
 
             var mailMessage = new MailMessage
             {
-                From = new MailAddress(_smtpUser, " Cloth Carousel"),
+                From = new MailAddress(_smtpUser, " Dress Code"),
                 Subject = subject,
                 Body = htmlMessage,
                 IsBodyHtml = true,

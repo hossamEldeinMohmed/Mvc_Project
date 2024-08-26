@@ -100,7 +100,7 @@ namespace Mvc_Project.Controllers
 
                 _productRepository.Add(product);
 
-                return RedirectToAction("Index");
+                return RedirectToAction("Details",product);
             }
 
             var categories = _productRepository.GetAllCategories();

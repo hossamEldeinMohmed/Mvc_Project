@@ -7,7 +7,8 @@
             List<Product> GetProductsByCategory(int categoryId);
             List<Product> SearchProducts(string searchTerm);
             List<Category> GetAllCategories();
-            List<Product> GetAllRandomly();
+            List<Product> GetAllRandomly(int pageNumber, int pageSize);
+            int Count();
        
 
 
