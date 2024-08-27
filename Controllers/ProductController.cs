@@ -11,7 +11,7 @@ namespace Mvc_Project.Controllers
     public class ProductController : Controller
     {
         private readonly IProductRepository _productRepository;
-
+        private readonly UserManager<User> userManager;
         public ProductController(IProductRepository productRepository)
         {
             _productRepository = productRepository;
