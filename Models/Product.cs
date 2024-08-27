@@ -28,7 +28,7 @@ namespace Mvc_Project.Models
         public List<WishlistItem> WishlistItems { get; set; } 
         public List<CartItem> CartItems { get; set; } 
 
-        public List<string> ProductImges { get; set; }
+        public List<ProductImages> ProductImges { get; set; }= new List<ProductImages>();
     }
 
 }

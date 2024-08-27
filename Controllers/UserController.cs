@@ -7,6 +7,7 @@ using System.Security.Claims;
 
 namespace Mvc_Project.Controllers
 {
+    [Authorize]
     public class UserController : Controller
     {
         private readonly IUserRepository _userRepository;
@@ -55,6 +56,26 @@ namespace Mvc_Project.Controllers
 
 
             return View(viewModel);
+        }
+
+        public IActionResult UserProfile()
+        {
+            var user = _userRepository.GetByName(User.Identity.Name);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return View(user);
+        }
+        [HttpPost]
+        public IActionResult UserProfile(User user)
+        {
+             _userRepository.Update(user);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return View(user);
         }
 
         public IActionResult Create()

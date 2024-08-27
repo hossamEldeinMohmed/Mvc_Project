@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Mvc_Project.Models;
@@ -13,11 +12,13 @@ namespace Mvc_Project.Controllers
     public class ProductController : Controller
     {
         private readonly IProductRepository _productRepository;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public ProductController(IProductRepository productRepository)
+
+        public ProductController(IProductRepository productRepository, IWebHostEnvironment webHostEnvironment)
         {
             _productRepository = productRepository;
-
+            
         }
 
 
@@ -46,8 +47,8 @@ namespace Mvc_Project.Controllers
                 Id = product.Id,
                 Name = product.Name,
                 Description = product.Description,
-                CategoryName = product.Category?.Name,
-                ProductImages = product.ProductImges
+                CategoryName = product.Category?.Name, 
+                ProductImages = product.ProductImges 
             };
 
             return View(viewModel);
@@ -78,7 +79,7 @@ namespace Mvc_Project.Controllers
 
         [HttpPost]
         [HttpPost]
-        public async Task<IActionResult> Add(ProductViewModel viewModel)
+        public async Task<IActionResult> Add(ProductFormViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
@@ -87,36 +88,11 @@ namespace Mvc_Project.Controllers
 
 
                 // Initialize the ProductImages list if it's null
-                if (viewModel.ProductImages == null)
+                if (viewModel.ProductImages != null)
                 {
-                    viewModel.ProductImages = new List<string>();
+                    UploadFiles(viewModel);
                 }
 
-                if (Request.Form.Files.Count > 0)
-                {
-                    foreach (var file in Request.Form.Files)
-                    {
-                        if (file.Length > 0)
-                        {
-                            var fileName = Path.GetFileName(file.FileName);
-                            var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
-
-                            if (!Directory.Exists(uploadsFolder))
-                            {
-                                Directory.CreateDirectory(uploadsFolder);
-                            }
-
-                            var filePath = Path.Combine(uploadsFolder, fileName);
-
-                            using (var stream = new FileStream(filePath, FileMode.Create))
-                            {
-                                await file.CopyToAsync(stream);
-                            }
-
-                            viewModel.ProductImages.Add(fileName);
-                        }
-                    }
-                }
 
                 var product = new Product
                 {
@@ -148,8 +124,70 @@ namespace Mvc_Project.Controllers
             return View(viewModel);
         }
 
+        private bool UploadFiles(ProductFormViewModel  model)
+        {
 
 
+            string path = Path.Combine(_webHostEnvironment.WebRootPath, "ProductFile");
+
+            //create folder if not exist
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+
+
+
+            var fileName = String.Empty;
+            var fileNameWithPath = String.Empty;
+
+
+            foreach (var formFile in model.ProductImageFormFile)
+            {
+                fileName = ChangeFileName(formFile.FileName, model.Name);
+
+                fileNameWithPath = Path.Combine(path, fileName);
+
+                using var stream = new FileStream(fileNameWithPath, FileMode.Create);
+                formFile.CopyTo(stream);
+                var productImages = new ProductImages {FileName=fileName};
+                model.ProductImages.Add(productImages);
+            }
+
+
+            return true;
+        }
+
+
+        public static string ChangeFileName(string filename, string productName)
+
+        {
+            string newFileName;
+
+            string[] substring;
+
+            char[] delimitdot = { '.' };
+
+            char[] delimitspace = { ' ' };
+
+            substring = filename.Split(delimitdot, 2);
+
+            string dateTimenew = DateTime.Now.ToString().Replace('/', ' ');
+
+            string dateTime = dateTimenew.Replace(':', ' ');
+
+            string[] substring1 = dateTime.Split(delimitspace);
+
+            string appenddatetime = "";
+
+            int i;
+
+            for (i = 0; i < substring1.Length - 1; i++)
+
+            {
+                appenddatetime += substring1[i];
+            }
+
+            return $"{productName}_{substring[0]}{appenddatetime}.{substring[1]}";
+        }
 
         public IActionResult Edit(int id)
         {

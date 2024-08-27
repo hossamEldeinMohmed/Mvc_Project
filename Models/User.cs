@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.Data;
 
 namespace Mvc_Project.Models
 {
@@ -13,6 +14,7 @@ namespace Mvc_Project.Models
         public bool EmailVerified { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
+        public DateTime? LastLoginDate { get; set; }
 
         public List<UserRole>? UserRoles { get; set; }
         public List<Product>? Products { get; set; }

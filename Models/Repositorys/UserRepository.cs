@@ -25,6 +25,13 @@
                 return _context.Users
                     .FirstOrDefault(u => u.Id == id);
             }
+            public User GetByName(string name)
+            {
+                return _context.Users
+                    .Include(u => u.UserRoles)
+                    .ThenInclude(ur => ur.Role)
+                    .FirstOrDefault(u => u.UserName == name);
+            }
 
             public void Add(User newUser)
             {

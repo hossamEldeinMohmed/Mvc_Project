@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Mvc_Project.Models;
+using Mvc_Project.Models.Repositorys;
+using Mvc_Project.Models.Repositorys.Mvc_Project.Models.Repositorys;
 
 namespace Mvc_Project.Controllers
 {
@@ -12,13 +14,15 @@ namespace Mvc_Project.Controllers
         private readonly SignInManager<User> signInManager;
         private readonly RoleManager<IdentityRole<int>> roleManager;
         private readonly IEmailSender emailSender;
+        private readonly IUserRepository _userRepository;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, RoleManager<IdentityRole<int>> roleManager,IEmailSender emailSender)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, RoleManager<IdentityRole<int>> roleManager, IEmailSender emailSender, IUserRepository userRepository)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.roleManager = roleManager;
             this.emailSender = emailSender;
+            _userRepository = userRepository;
         }
 
         [HttpGet]
@@ -29,9 +33,13 @@ namespace Mvc_Project.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SaveRegister(RegisterUserViewModel DataFromRequst) {
+        public async Task<IActionResult> SaveRegister(RegisterUserViewModel DataFromRequst)
+        {
             if (ModelState.IsValid)
             {
+
+                // Ensure the roles are created
+                await CreateRole("vendor");
 
                 var existingUserName = await userManager.FindByNameAsync(DataFromRequst.UserName);
                 if (existingUserName != null)
@@ -40,7 +48,7 @@ namespace Mvc_Project.Controllers
                     return View("Register", DataFromRequst);
                 }
 
-             
+
                 var existingEmail = await userManager.FindByEmailAsync(DataFromRequst.Email);
                 if (existingEmail != null)
                 {
@@ -61,7 +69,7 @@ namespace Mvc_Project.Controllers
                 userToDb.PasswordHash = DataFromRequst.Password;
                 userToDb.Email = DataFromRequst.Email;
                 userToDb.PhoneNumber = DataFromRequst.PhoneNumber;
-                userToDb.CreatedAt = DateTime.UtcNow;   
+                userToDb.CreatedAt = DateTime.UtcNow;
 
                 //saving in DB
                 //passward Hasing
@@ -72,14 +80,14 @@ namespace Mvc_Project.Controllers
                     await userManager.AddToRoleAsync(userToDb, "vendor");
 
                     var confirmationToken = await userManager.GenerateEmailConfirmationTokenAsync(userToDb);
-                  //  await SendConfirmationEmailAsync(userToDb, confirmationToken);
+                    await SendConfirmationEmailAsync(userToDb, confirmationToken);
 
 
-                   /* //make cookie
+                    /* //make cookie
 
-                    await signInManager.SignInAsync(userToDb, false);*/
+                     await signInManager.SignInAsync(userToDb, false);*/
 
-                    return RedirectToAction("RegisterConfirmation", "Account");
+                    return RedirectToAction("Login", "Account");
 
                 }
 
@@ -90,7 +98,7 @@ namespace Mvc_Project.Controllers
                 }
             }
 
-            
+
             return View("Register", DataFromRequst);
 
         }
@@ -103,12 +111,14 @@ namespace Mvc_Project.Controllers
         }
 
         [HttpPost]
-        [HttpPost]
-        public async Task<IActionResult> SaveLogin(LoginUserViewModel UserLoginFromRequst, string returnUrl = null)
+        public async Task< IActionResult> SaveLogin(LoginUserViewModel UserLoginFromRequst)
         {
             if (ModelState.IsValid)
             {
                 var UserFromDB = await userManager.FindByEmailAsync(UserLoginFromRequst.Identifier);
+
+             User UserFromDB =   await userManager.FindByEmailAsync(UserLoginFromRequst.Identifier);
+                
 
                 if (UserFromDB == null)
                 {
@@ -117,27 +127,27 @@ namespace Mvc_Project.Controllers
 
                 if (UserFromDB != null)
                 {
-                    var Found = await userManager.CheckPasswordAsync(UserFromDB, UserLoginFromRequst.Password);
+                  bool Found = await userManager.CheckPasswordAsync(UserFromDB, UserLoginFromRequst.Password);
                     if (Found)
                     {
-                        await signInManager.SignInAsync(UserFromDB, UserLoginFromRequst.RememberMe);
 
-                       
-                        return returnUrl != null ? Redirect(returnUrl) : RedirectToAction("Index", "Home");
+                      await   signInManager.SignInAsync(UserFromDB, UserLoginFromRequst.RememberMe);
+                        return RedirectToAction();
                     }
-                }
 
                 ModelState.AddModelError("", "User Email / User Name or Password is incorrect");
             }
 
-            return View("Login", UserLoginFromRequst);
-        }
+                ModelState.AddModelError("", "User Email / User Name or Password Wrong");
 
+            }
+            return View("Login",UserLoginFromRequst);
+        }
 
 
         public async Task<IActionResult>ConfirmEmail(string userId, string token)
         {
-            if(userId == null || token == null)
+            if (userId == null || token == null)
             {
                 return View("Error");
             }
@@ -152,7 +162,7 @@ namespace Mvc_Project.Controllers
             {
                 ViewBag.IsEmailConfirmed = true;
 
-                
+
                 ViewBag.RedirectUrl = Url.Action("Login", "Account");
 
                 return View("Confirmation");
@@ -175,7 +185,7 @@ namespace Mvc_Project.Controllers
                 return NotFound($"Unable to load user with ID '{userId}'.");
             }
 
-            if (token != null) 
+            if (token != null)
             {
                 var result = await userManager.ConfirmEmailAsync(user, token);
                 if (result.Succeeded)
@@ -189,7 +199,7 @@ namespace Mvc_Project.Controllers
                     return View("Confirmation");
                 }
             }
-            else 
+            else
             {
                 var confirmationToken = await userManager.GenerateEmailConfirmationTokenAsync(user);
                 await SendConfirmationEmailAsync(user, confirmationToken);
@@ -201,7 +211,7 @@ namespace Mvc_Project.Controllers
             }
         }
 
-     
+
         public IActionResult RegisterConfirmation(string userId)
         {
             ViewBag.UserId = userId;
@@ -223,8 +233,32 @@ namespace Mvc_Project.Controllers
             await emailSender.SendEmailAsync(user.Email, emailSubject, emailBody);
         }
 
-
-
-
+        public async Task<IActionResult> CreateRole(string roleName)
+        {
+            if (!string.IsNullOrEmpty(roleName))
+            {
+                var roleExists = await roleManager.RoleExistsAsync(roleName);
+                if (!roleExists)
+                {
+                    var result = await roleManager.CreateAsync(new IdentityRole<int> { Name = roleName });
+                    if (result.Succeeded)
+                    {
+                        return Ok("Role created successfully");
+                    }
+                    else
+                    {
+                        return BadRequest("Error creating role");
+                    }
+                }
+                else
+                {
+                    return BadRequest("Role already exists");
+                }
+            }
+            return BadRequest("Role name is required");
+        }
     }
+
+
+
 }
