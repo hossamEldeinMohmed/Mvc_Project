@@ -12,8 +12,8 @@ using Mvc_Project.Models;
 namespace Mvc_Project.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20240826041803_hossam")]
-    partial class hossam
+    [Migration("20240827085018_final")]
+    partial class final
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -476,10 +476,6 @@ namespace Mvc_Project.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("ProductImges")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -529,6 +525,28 @@ namespace Mvc_Project.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("ProductAttributes");
+                });
+
+            modelBuilder.Entity("Mvc_Project.Models.ProductImages", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductImages");
                 });
 
             modelBuilder.Entity("Mvc_Project.Models.ProductQuestion", b =>
@@ -792,6 +810,9 @@ namespace Mvc_Project.Migrations
                     b.Property<bool>("EmailVerified")
                         .HasColumnType("bit");
 
+                    b.Property<DateTime?>("LastLoginDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
@@ -814,6 +835,10 @@ namespace Mvc_Project.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<string>("ProfileImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
@@ -1123,6 +1148,17 @@ namespace Mvc_Project.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("Mvc_Project.Models.ProductImages", b =>
+                {
+                    b.HasOne("Mvc_Project.Models.Product", "Product")
+                        .WithMany("ProductImges")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("Mvc_Project.Models.ProductQuestion", b =>
                 {
                     b.HasOne("Mvc_Project.Models.Product", "Product")
@@ -1300,6 +1336,8 @@ namespace Mvc_Project.Migrations
                     b.Navigation("CartItems");
 
                     b.Navigation("ProductAttributes");
+
+                    b.Navigation("ProductImges");
 
                     b.Navigation("ProductQuestions");
 

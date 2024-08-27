@@ -473,7 +473,7 @@ namespace Mvc_Project.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("ProductImges")
+                    b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -1150,7 +1150,7 @@ namespace Mvc_Project.Migrations
                     b.HasOne("Mvc_Project.Models.Product", "Product")
                         .WithMany("ProductImges")
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Product");

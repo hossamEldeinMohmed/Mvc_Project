@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Mvc_Project.Models;
@@ -14,21 +15,19 @@ namespace Mvc_Project.Controllers
         private readonly IProductRepository _productRepository;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-
         public ProductController(IProductRepository productRepository, IWebHostEnvironment webHostEnvironment)
         {
             _productRepository = productRepository;
-            
+            _webHostEnvironment = webHostEnvironment;
         }
-
 
         public IActionResult Index(string searchString)
         {
-            searchString = String.IsNullOrEmpty(searchString) ? "" : searchString.ToLower();
+            searchString = string.IsNullOrEmpty(searchString) ? "" : searchString.ToLower();
             var products = _productRepository.GetAll();
-            if (!String.IsNullOrEmpty(searchString))
+            if (!string.IsNullOrEmpty(searchString))
             {
-                products = products.Where(p => (p.Name).ToLower().Contains(searchString)).ToList();
+                products = products.Where(p => p.Name.ToLower().Contains(searchString)).ToList();
             }
             return View(products);
         }
@@ -41,19 +40,17 @@ namespace Mvc_Project.Controllers
                 return NotFound();
             }
 
-
             var viewModel = new ProductViewModel
             {
                 Id = product.Id,
                 Name = product.Name,
                 Description = product.Description,
-                CategoryName = product.Category?.Name, 
-                ProductImages = product.ProductImges 
+                CategoryName = product.Category?.Name,
+                ProductImages = product.ProductImges
             };
 
             return View(viewModel);
         }
-
 
         [Authorize]
         public IActionResult Add()
@@ -78,7 +75,8 @@ namespace Mvc_Project.Controllers
         }
 
         [HttpPost]
-        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(ProductFormViewModel viewModel)
         {
             if (ModelState.IsValid)
@@ -86,13 +84,16 @@ namespace Mvc_Project.Controllers
                 var userIdFromCookie = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
                 int userIdFromCookieParth = int.Parse(userIdFromCookie);
 
-
                 // Initialize the ProductImages list if it's null
-                if (viewModel.ProductImages != null)
+                if (viewModel.ProductImages == null)
+                {
+                    viewModel.ProductImages = new List<ProductImages>();
+                }
+
+                if (viewModel.ProductImageFormFile != null && viewModel.ProductImageFormFile.Any())
                 {
                     UploadFiles(viewModel);
                 }
-
 
                 var product = new Product
                 {
@@ -103,10 +104,7 @@ namespace Mvc_Project.Controllers
                     ProductImges = viewModel.ProductImages,
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow,
-
                     UserId = userIdFromCookieParth
-
-
                 };
 
                 _productRepository.Add(product);
@@ -124,71 +122,37 @@ namespace Mvc_Project.Controllers
             return View(viewModel);
         }
 
-        private bool UploadFiles(ProductFormViewModel  model)
+        private bool UploadFiles(ProductFormViewModel model)
         {
-
-
             string path = Path.Combine(_webHostEnvironment.WebRootPath, "ProductFile");
 
-            //create folder if not exist
+            // Create folder if it doesn't exist
             if (!Directory.Exists(path))
                 Directory.CreateDirectory(path);
 
-
-
-            var fileName = String.Empty;
-            var fileNameWithPath = String.Empty;
-
-
             foreach (var formFile in model.ProductImageFormFile)
             {
-                fileName = ChangeFileName(formFile.FileName, model.Name);
-
-                fileNameWithPath = Path.Combine(path, fileName);
+                var fileName = ChangeFileName(formFile.FileName, model.Name);
+                var fileNameWithPath = Path.Combine(path, fileName);
 
                 using var stream = new FileStream(fileNameWithPath, FileMode.Create);
                 formFile.CopyTo(stream);
-                var productImages = new ProductImages {FileName=fileName};
-                model.ProductImages.Add(productImages);
-            }
 
+                var productImage = new ProductImages { FileName = fileName };
+                model.ProductImages.Add(productImage);
+            }
 
             return true;
         }
 
-
         public static string ChangeFileName(string filename, string productName)
-
         {
-            string newFileName;
-
-            string[] substring;
-
-            char[] delimitdot = { '.' };
-
-            char[] delimitspace = { ' ' };
-
-            substring = filename.Split(delimitdot, 2);
-
-            string dateTimenew = DateTime.Now.ToString().Replace('/', ' ');
-
-            string dateTime = dateTimenew.Replace(':', ' ');
-
-            string[] substring1 = dateTime.Split(delimitspace);
-
-            string appenddatetime = "";
-
-            int i;
-
-            for (i = 0; i < substring1.Length - 1; i++)
-
-            {
-                appenddatetime += substring1[i];
-            }
-
-            return $"{productName}_{substring[0]}{appenddatetime}.{substring[1]}";
+            string[] substring = filename.Split('.');
+            string dateTime = DateTime.Now.ToString("yyyyMMddHHmmss");
+            return $"{productName}_{substring[0]}_{dateTime}.{substring[1]}";
         }
 
+        [Authorize]
         public IActionResult Edit(int id)
         {
             var product = _productRepository.GetByID(id);
@@ -208,6 +172,7 @@ namespace Mvc_Project.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, Product product)
         {
@@ -225,7 +190,7 @@ namespace Mvc_Project.Controllers
             return View(product);
         }
 
-
+        [Authorize]
         public IActionResult Delete(int id)
         {
             var product = _productRepository.GetByID(id);
@@ -237,6 +202,7 @@ namespace Mvc_Project.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {

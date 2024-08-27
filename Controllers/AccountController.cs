@@ -32,76 +32,66 @@ namespace Mvc_Project.Controllers
             return View("Register");
         }
 
-        [HttpPost]
-        public async Task<IActionResult> SaveRegister(RegisterUserViewModel DataFromRequst)
+       [HttpPost]
+public async Task<IActionResult> SaveRegister(RegisterUserViewModel DataFromRequest)
+{
+    if (ModelState.IsValid)
+    {
+        // Ensure the roles are created
+        await CreateRole("vendor");
+
+        var existingUserName = await userManager.FindByNameAsync(DataFromRequest.UserName);
+        if (existingUserName != null)
         {
-            if (ModelState.IsValid)
-            {
-
-                // Ensure the roles are created
-                await CreateRole("vendor");
-
-                var existingUserName = await userManager.FindByNameAsync(DataFromRequst.UserName);
-                if (existingUserName != null)
-                {
-                    ModelState.AddModelError("", "Username already exists.");
-                    return View("Register", DataFromRequst);
-                }
-
-
-                var existingEmail = await userManager.FindByEmailAsync(DataFromRequst.Email);
-                if (existingEmail != null)
-                {
-                    ModelState.AddModelError("", "Email already exists.");
-                    return View("Register", DataFromRequst);
-                }
-
-                var existingPhoneNumber = await userManager.Users
-                    .AnyAsync(u => u.PhoneNumber == DataFromRequst.PhoneNumber);
-                if (existingPhoneNumber)
-                {
-                    ModelState.AddModelError("", "Phone number already exists.");
-                    return View("Register", DataFromRequst);
-                }
-                User userToDb = new User();
-
-                userToDb.UserName = DataFromRequst.UserName;
-                userToDb.PasswordHash = DataFromRequst.Password;
-                userToDb.Email = DataFromRequst.Email;
-                userToDb.PhoneNumber = DataFromRequst.PhoneNumber;
-                userToDb.CreatedAt = DateTime.UtcNow;
-
-                //saving in DB
-                //passward Hasing
-                var Resalt = await userManager.CreateAsync(userToDb, DataFromRequst.Password);
-
-                if (Resalt.Succeeded)
-                {
-                    await userManager.AddToRoleAsync(userToDb, "vendor");
-
-                    var confirmationToken = await userManager.GenerateEmailConfirmationTokenAsync(userToDb);
-                    await SendConfirmationEmailAsync(userToDb, confirmationToken);
-
-
-                    /* //make cookie
-
-                     await signInManager.SignInAsync(userToDb, false);*/
-
-                    return RedirectToAction("Login", "Account");
-
-                }
-
-                foreach (var item in Resalt.Errors)
-                {
-
-                    ModelState.AddModelError("", item.Description);
-                }
-            }
-
-
-            return View("Register", DataFromRequst);
-
+            ModelState.AddModelError("", "Username already exists.");
+            return View("Register", DataFromRequest);
         }
+
+        var existingEmail = await userManager.FindByEmailAsync(DataFromRequest.Email);
+        if (existingEmail != null)
+        {
+            ModelState.AddModelError("", "Email already exists.");
+            return View("Register", DataFromRequest);
+        }
+
+        var existingPhoneNumber = await userManager.Users
+            .AnyAsync(u => u.PhoneNumber == DataFromRequest.PhoneNumber);
+        if (existingPhoneNumber)
+        {
+            ModelState.AddModelError("", "Phone number already exists.");
+            return View("Register", DataFromRequest);
+        }
+
+        User userToDb = new User
+        {
+            UserName = DataFromRequest.UserName,
+            Email = DataFromRequest.Email,
+            PhoneNumber = DataFromRequest.PhoneNumber,
+            CreatedAt = DateTime.UtcNow,
+            ProfileImageUrl = "~/images/default-profile.png" // Default profile image
+        };
+
+        // Password Hashing
+        var result = await userManager.CreateAsync(userToDb, DataFromRequest.Password);
+
+        if (result.Succeeded)
+        {
+            await userManager.AddToRoleAsync(userToDb, "vendor");
+
+            var confirmationToken = await userManager.GenerateEmailConfirmationTokenAsync(userToDb);
+            await SendConfirmationEmailAsync(userToDb, confirmationToken);
+
+            return RedirectToAction("Login", "Account");
+        }
+
+        foreach (var item in result.Errors)
+        {
+            ModelState.AddModelError("", item.Description);
+        }
+    }
+
+    return View("Register", DataFromRequest);
+}
 
 
         public IActionResult Login()
@@ -111,14 +101,11 @@ namespace Mvc_Project.Controllers
         }
 
         [HttpPost]
-        public async Task< IActionResult> SaveLogin(LoginUserViewModel UserLoginFromRequst)
+        public async Task<IActionResult> SaveLogin(LoginUserViewModel UserLoginFromRequst)
         {
             if (ModelState.IsValid)
             {
-                var UserFromDB = await userManager.FindByEmailAsync(UserLoginFromRequst.Identifier);
-
-             User UserFromDB =   await userManager.FindByEmailAsync(UserLoginFromRequst.Identifier);
-                
+                User UserFromDB = await userManager.FindByEmailAsync(UserLoginFromRequst.Identifier);
 
                 if (UserFromDB == null)
                 {
@@ -127,22 +114,24 @@ namespace Mvc_Project.Controllers
 
                 if (UserFromDB != null)
                 {
-                  bool Found = await userManager.CheckPasswordAsync(UserFromDB, UserLoginFromRequst.Password);
+                    bool Found = await userManager.CheckPasswordAsync(UserFromDB, UserLoginFromRequst.Password);
                     if (Found)
                     {
-
-                      await   signInManager.SignInAsync(UserFromDB, UserLoginFromRequst.RememberMe);
-                        return RedirectToAction();
+                        await signInManager.SignInAsync(UserFromDB, UserLoginFromRequst.RememberMe);
+                        return RedirectToAction("Index", "Home"); // Redirecting to Home Index view
                     }
 
-                ModelState.AddModelError("", "User Email / User Name or Password is incorrect");
+                    ModelState.AddModelError("", "User Email / User Name or Password is incorrect");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "User Email / User Name or Password is incorrect");
+                }
             }
 
-                ModelState.AddModelError("", "User Email / User Name or Password Wrong");
-
-            }
-            return View("Login",UserLoginFromRequst);
+            return View("Login", UserLoginFromRequst);
         }
+
 
 
         public async Task<IActionResult>ConfirmEmail(string userId, string token)
@@ -255,7 +244,8 @@ namespace Mvc_Project.Controllers
                     return BadRequest("Role already exists");
                 }
             }
-            return BadRequest("Role name is required");
+            return BadRequest("Role name is requi" +
+                "red");
         }
     }
 

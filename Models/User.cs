@@ -9,7 +9,7 @@ namespace Mvc_Project.Models
 
 
         /* public int Id { get; set; }*/
-        public string ProfileImageUrl { get; set; } // Add this property for the image
+        public string? ProfileImageUrl { get; set; } // Add this property for the image
 
         public bool EmailVerified { get; set; }
         public DateTime CreatedAt { get; set; }
