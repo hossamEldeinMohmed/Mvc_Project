@@ -72,7 +72,7 @@ namespace Mvc_Project.Controllers
                     await userManager.AddToRoleAsync(userToDb, "vendor");
 
                     var confirmationToken = await userManager.GenerateEmailConfirmationTokenAsync(userToDb);
-                    await SendConfirmationEmailAsync(userToDb, confirmationToken);
+                  //  await SendConfirmationEmailAsync(userToDb, confirmationToken);
 
 
                    /* //make cookie
@@ -103,36 +103,36 @@ namespace Mvc_Project.Controllers
         }
 
         [HttpPost]
-        public async Task< IActionResult> SaveLogin(LoginUserViewModel UserLoginFromRequst)
+        [HttpPost]
+        public async Task<IActionResult> SaveLogin(LoginUserViewModel UserLoginFromRequst, string returnUrl = null)
         {
-
             if (ModelState.IsValid)
             {
-
-             User UserFromDB =   await userManager.FindByEmailAsync(UserLoginFromRequst.Identifier);
-                
+                var UserFromDB = await userManager.FindByEmailAsync(UserLoginFromRequst.Identifier);
 
                 if (UserFromDB == null)
                 {
                     UserFromDB = await userManager.FindByNameAsync(UserLoginFromRequst.Identifier);
                 }
+
                 if (UserFromDB != null)
                 {
-                  bool Found = await userManager.CheckPasswordAsync(UserFromDB, UserLoginFromRequst.Password);
+                    var Found = await userManager.CheckPasswordAsync(UserFromDB, UserLoginFromRequst.Password);
                     if (Found)
                     {
+                        await signInManager.SignInAsync(UserFromDB, UserLoginFromRequst.RememberMe);
 
-                      await   signInManager.SignInAsync(UserFromDB, UserLoginFromRequst.RememberMe);
-                        return RedirectToAction();
+                       
+                        return returnUrl != null ? Redirect(returnUrl) : RedirectToAction("Index", "Home");
                     }
-
                 }
 
-                ModelState.AddModelError("", "User Email / User Name or Password Wrong");
-
+                ModelState.AddModelError("", "User Email / User Name or Password is incorrect");
             }
-            return View("Login",UserLoginFromRequst);
+
+            return View("Login", UserLoginFromRequst);
         }
+
 
 
         public async Task<IActionResult>ConfirmEmail(string userId, string token)

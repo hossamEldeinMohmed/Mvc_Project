@@ -23,8 +23,6 @@
             public User GetByID(int id)
             {
                 return _context.Users
-                    .Include(u => u.UserRoles)
-                    .ThenInclude(ur => ur.Role)
                     .FirstOrDefault(u => u.Id == id);
             }
 

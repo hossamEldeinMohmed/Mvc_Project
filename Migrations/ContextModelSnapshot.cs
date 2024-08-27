@@ -477,6 +477,10 @@ namespace Mvc_Project.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
@@ -660,7 +664,7 @@ namespace Mvc_Project.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Role");
+                    b.ToTable("Roles");
                 });
 
             modelBuilder.Entity("Mvc_Project.Models.SellerProduct", b =>
@@ -808,6 +812,10 @@ namespace Mvc_Project.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("ProfileImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -886,7 +894,7 @@ namespace Mvc_Project.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserRole");
+                    b.ToTable("UserRoles");
                 });
 
             modelBuilder.Entity("Mvc_Project.Models.Wishlist", b =>
@@ -944,13 +952,13 @@ namespace Mvc_Project.Migrations
                     b.HasOne("Mvc_Project.Models.Product", "Product")
                         .WithMany("CartItems")
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Mvc_Project.Models.ShoppingCart", "ShoppingCart")
                         .WithMany("CartItems")
                         .HasForeignKey("ShoppingCartId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Product");
@@ -963,7 +971,7 @@ namespace Mvc_Project.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<int>", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 
@@ -972,7 +980,7 @@ namespace Mvc_Project.Migrations
                     b.HasOne("Mvc_Project.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 
@@ -981,7 +989,7 @@ namespace Mvc_Project.Migrations
                     b.HasOne("Mvc_Project.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 
@@ -990,13 +998,13 @@ namespace Mvc_Project.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<int>", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Mvc_Project.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 
@@ -1005,7 +1013,7 @@ namespace Mvc_Project.Migrations
                     b.HasOne("Mvc_Project.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 
@@ -1014,13 +1022,13 @@ namespace Mvc_Project.Migrations
                     b.HasOne("Mvc_Project.Models.ShoppingCart", "ShoppingCart")
                         .WithMany()
                         .HasForeignKey("ShoppingCartId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Mvc_Project.Models.User", "User")
                         .WithMany("Orders")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("ShoppingCart");
@@ -1033,13 +1041,13 @@ namespace Mvc_Project.Migrations
                     b.HasOne("Mvc_Project.Models.Coupon", "Coupon")
                         .WithMany("OrderCoupons")
                         .HasForeignKey("CouponId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Mvc_Project.Models.Order", "Order")
                         .WithMany("OrderCoupons")
                         .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Coupon");
@@ -1052,13 +1060,13 @@ namespace Mvc_Project.Migrations
                     b.HasOne("Mvc_Project.Models.Order", "Order")
                         .WithMany("OrderPayments")
                         .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Mvc_Project.Models.PaymentMethod", "PaymentMethod")
                         .WithMany()
                         .HasForeignKey("PaymentMethodId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Order");
@@ -1071,7 +1079,7 @@ namespace Mvc_Project.Migrations
                     b.HasOne("Mvc_Project.Models.Order", "Order")
                         .WithMany("OrderStatusHistories")
                         .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Order");
@@ -1082,7 +1090,7 @@ namespace Mvc_Project.Migrations
                     b.HasOne("Mvc_Project.Models.User", "User")
                         .WithMany("PaymentMethods")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -1093,14 +1101,16 @@ namespace Mvc_Project.Migrations
                     b.HasOne("Mvc_Project.Models.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("Mvc_Project.Models.User", null)
+                    b.HasOne("Mvc_Project.Models.User", "User")
                         .WithMany("Products")
                         .HasForeignKey("UserId");
 
                     b.Navigation("Category");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Mvc_Project.Models.ProductAttribute", b =>
@@ -1108,7 +1118,7 @@ namespace Mvc_Project.Migrations
                     b.HasOne("Mvc_Project.Models.Product", "Product")
                         .WithMany("ProductAttributes")
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Product");
@@ -1119,13 +1129,13 @@ namespace Mvc_Project.Migrations
                     b.HasOne("Mvc_Project.Models.Product", "Product")
                         .WithMany("ProductQuestions")
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Mvc_Project.Models.User", "User")
                         .WithMany("ProductQuestions")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Product");
@@ -1138,13 +1148,13 @@ namespace Mvc_Project.Migrations
                     b.HasOne("Mvc_Project.Models.Product", "Product")
                         .WithMany("ProductReviews")
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Mvc_Project.Models.User", "User")
                         .WithMany("ProductReviews")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Product");
@@ -1157,13 +1167,13 @@ namespace Mvc_Project.Migrations
                     b.HasOne("Mvc_Project.Models.Product", "Product")
                         .WithMany("ProductTagMappings")
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Mvc_Project.Models.ProductTag", "Tag")
                         .WithMany("ProductTagMappings")
                         .HasForeignKey("TagId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Product");
@@ -1176,7 +1186,7 @@ namespace Mvc_Project.Migrations
                     b.HasOne("Mvc_Project.Models.Product", "Product")
                         .WithMany("SellerProducts")
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Product");
@@ -1187,7 +1197,7 @@ namespace Mvc_Project.Migrations
                     b.HasOne("Mvc_Project.Models.Order", "Order")
                         .WithOne("ShipmentDetail")
                         .HasForeignKey("Mvc_Project.Models.ShipmentDetail", "OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Order");
@@ -1198,7 +1208,7 @@ namespace Mvc_Project.Migrations
                     b.HasOne("Mvc_Project.Models.User", "User")
                         .WithMany("ShoppingCarts")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -1209,7 +1219,7 @@ namespace Mvc_Project.Migrations
                     b.HasOne("Mvc_Project.Models.User", "User")
                         .WithMany("UserPreferences")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -1220,13 +1230,13 @@ namespace Mvc_Project.Migrations
                     b.HasOne("Mvc_Project.Models.Role", "Role")
                         .WithMany("UserRoles")
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Mvc_Project.Models.User", "User")
                         .WithMany("UserRoles")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Role");
@@ -1239,7 +1249,7 @@ namespace Mvc_Project.Migrations
                     b.HasOne("Mvc_Project.Models.User", "User")
                         .WithMany("Wishlists")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -1250,13 +1260,13 @@ namespace Mvc_Project.Migrations
                     b.HasOne("Mvc_Project.Models.Product", "Product")
                         .WithMany("WishlistItems")
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Mvc_Project.Models.Wishlist", "Wishlist")
                         .WithMany("WishlistItems")
                         .HasForeignKey("WishlistId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Product");

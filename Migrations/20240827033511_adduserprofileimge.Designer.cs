@@ -12,8 +12,8 @@ using Mvc_Project.Models;
 namespace Mvc_Project.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20240825213614_user")]
-    partial class user
+    [Migration("20240827033511_adduserprofileimge")]
+    partial class adduserprofileimge
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -480,6 +480,10 @@ namespace Mvc_Project.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
@@ -663,7 +667,7 @@ namespace Mvc_Project.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Role");
+                    b.ToTable("Roles");
                 });
 
             modelBuilder.Entity("Mvc_Project.Models.SellerProduct", b =>
@@ -811,6 +815,10 @@ namespace Mvc_Project.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("ProfileImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -889,7 +897,7 @@ namespace Mvc_Project.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserRole");
+                    b.ToTable("UserRoles");
                 });
 
             modelBuilder.Entity("Mvc_Project.Models.Wishlist", b =>
@@ -1099,11 +1107,13 @@ namespace Mvc_Project.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Mvc_Project.Models.User", null)
+                    b.HasOne("Mvc_Project.Models.User", "User")
                         .WithMany("Products")
                         .HasForeignKey("UserId");
 
                     b.Navigation("Category");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Mvc_Project.Models.ProductAttribute", b =>

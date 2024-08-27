@@ -1,29 +1,31 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Mvc_Project.Models;
 using Mvc_Project.Models.Repositorys;
 using Mvc_Project.Models.Repositorys.Mvc_Project.Models.Repositorys;
 using Mvc_Project.Models.ViewModels;
+using System.Security.Claims;
 
 namespace Mvc_Project.Controllers
 {
     public class ProductController : Controller
     {
         private readonly IProductRepository _productRepository;
-        private readonly UserManager<User> userManager;
+
         public ProductController(IProductRepository productRepository)
         {
             _productRepository = productRepository;
-            
+
         }
 
 
         public IActionResult Index(string searchString)
         {
-            searchString = String.IsNullOrEmpty(searchString)?"": searchString.ToLower();
+            searchString = String.IsNullOrEmpty(searchString) ? "" : searchString.ToLower();
             var products = _productRepository.GetAll();
-            if(!String.IsNullOrEmpty(searchString))
+            if (!String.IsNullOrEmpty(searchString))
             {
                 products = products.Where(p => (p.Name).ToLower().Contains(searchString)).ToList();
             }
@@ -38,22 +40,27 @@ namespace Mvc_Project.Controllers
                 return NotFound();
             }
 
-           
+
             var viewModel = new ProductViewModel
             {
                 Id = product.Id,
                 Name = product.Name,
                 Description = product.Description,
-                CategoryName = product.Category?.Name, 
-                ProductImages = product.ProductImges 
+                CategoryName = product.Category?.Name,
+                ProductImages = product.ProductImges
             };
 
             return View(viewModel);
         }
 
 
+        [Authorize]
         public IActionResult Add()
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             var categories = _productRepository.GetAllCategories();
             var categorySelectList = categories.Select(c => new SelectListItem
             {
@@ -75,6 +82,10 @@ namespace Mvc_Project.Controllers
         {
             if (ModelState.IsValid)
             {
+                var userIdFromCookie = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                int userIdFromCookieParth = int.Parse(userIdFromCookie);
+
+
                 // Initialize the ProductImages list if it's null
                 if (viewModel.ProductImages == null)
                 {
@@ -115,12 +126,16 @@ namespace Mvc_Project.Controllers
                     Price = viewModel.Price,
                     ProductImges = viewModel.ProductImages,
                     CreatedAt = DateTime.UtcNow,
-                    UpdatedAt = DateTime.UtcNow
+                    UpdatedAt = DateTime.UtcNow,
+
+                    UserId = userIdFromCookieParth
+
+
                 };
 
                 _productRepository.Add(product);
 
-                return RedirectToAction("Details",product);
+                return RedirectToAction("Index");
             }
 
             var categories = _productRepository.GetAllCategories();
@@ -172,7 +187,7 @@ namespace Mvc_Project.Controllers
             return View(product);
         }
 
-        
+
         public IActionResult Delete(int id)
         {
             var product = _productRepository.GetByID(id);

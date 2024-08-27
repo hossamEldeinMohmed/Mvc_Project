@@ -12,8 +12,8 @@ using Mvc_Project.Models;
 namespace Mvc_Project.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20240820183707_FixRoltwo")]
-    partial class FixRoltwo
+    [Migration("20240826041803_hossam")]
+    partial class hossam
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -480,12 +480,21 @@ namespace Mvc_Project.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Products");
                 });
@@ -658,7 +667,7 @@ namespace Mvc_Project.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Role");
+                    b.ToTable("Roles");
                 });
 
             modelBuilder.Entity("Mvc_Project.Models.SellerProduct", b =>
@@ -884,7 +893,7 @@ namespace Mvc_Project.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserRole");
+                    b.ToTable("UserRoles");
                 });
 
             modelBuilder.Entity("Mvc_Project.Models.Wishlist", b =>
@@ -1094,7 +1103,13 @@ namespace Mvc_Project.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Mvc_Project.Models.User", "User")
+                        .WithMany("Products")
+                        .HasForeignKey("UserId");
+
                     b.Navigation("Category");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Mvc_Project.Models.ProductAttribute", b =>
@@ -1321,6 +1336,8 @@ namespace Mvc_Project.Migrations
                     b.Navigation("ProductQuestions");
 
                     b.Navigation("ProductReviews");
+
+                    b.Navigation("Products");
 
                     b.Navigation("ShoppingCarts");
 

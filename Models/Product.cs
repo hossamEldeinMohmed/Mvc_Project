@@ -18,6 +18,8 @@ namespace Mvc_Project.Models
         [ForeignKey("User")]
         public int? UserId { get; set; }
         public User User { get; set; }
+
+        public string Status { get; set; } = "Pending";
         public List<ProductAttribute> ProductAttributes { get; set; } 
         public List<SellerProduct> SellerProducts { get; set; } 
         public List<ProductReview> ProductReviews { get; set; } 
