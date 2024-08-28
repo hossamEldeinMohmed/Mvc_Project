@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Mvc_Project.Models;
 using Mvc_Project.Models.Repositorys;
 using Mvc_Project.Models.Repositorys.Mvc_Project.Models.Repositorys;
 using Mvc_Project.Models.ViewModels;
-
+using System.Security.Claims;
 namespace Mvc_Project.Controllers
 {
     public class ProductController : Controller
@@ -51,9 +52,13 @@ namespace Mvc_Project.Controllers
             return View(viewModel);
         }
 
-
+        [Authorize]
         public IActionResult Add()
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             var categories = _productRepository.GetAllCategories();
             var categorySelectList = categories.Select(c => new SelectListItem
             {
@@ -75,6 +80,8 @@ namespace Mvc_Project.Controllers
         {
             if (ModelState.IsValid)
             {
+                var userIdFromCookie = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                int userIdFromCookieParth = int.Parse(userIdFromCookie);
                 // Initialize the ProductImages list if it's null
                 if (viewModel.ProductImages == null)
                 {
@@ -115,12 +122,15 @@ namespace Mvc_Project.Controllers
                     Price = viewModel.Price,
                     ProductImges = viewModel.ProductImages,
                     CreatedAt = DateTime.UtcNow,
-                    UpdatedAt = DateTime.UtcNow
+                    UpdatedAt = DateTime.UtcNow,
+                    UserId = userIdFromCookieParth
                 };
 
                 _productRepository.Add(product);
 
-                return RedirectToAction("Details",product);
+                return RedirectToAction("Index");
+
+
             }
 
             var categories = _productRepository.GetAllCategories();

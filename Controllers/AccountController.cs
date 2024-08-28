@@ -72,7 +72,7 @@ namespace Mvc_Project.Controllers
                     await userManager.AddToRoleAsync(userToDb, "vendor");
 
                     var confirmationToken = await userManager.GenerateEmailConfirmationTokenAsync(userToDb);
-                    await SendConfirmationEmailAsync(userToDb, confirmationToken);
+                   // await SendConfirmationEmailAsync(userToDb, confirmationToken);
 
 
                    /* //make cookie
