@@ -80,10 +80,17 @@
                             <li>
                                 <a href="#">Women’s</a>
                                 <ul class="dropdown">
-                                    <!-- Dropdown items -->
+                                    <a href="#">Women’s</a>
+                                    <ul class="dropdown">
+                                        <li><a asp-controller="Category" asp-action="Dresses">Dresses</a></li>
+                                        <li><a asp-controller="Category" asp-action="Tops">Tops</a></li>
+                                        <li><a asp-controller="Category" asp-action="Bottoms">Bottoms</a></li>
+                                        <li><a asp-controller="Category" asp-action="Shoes">Shoes</a></li>
+                                        <li><a asp-controller="Category" asp-action="AccessoriesAndMakeUp">Accessories & MakeUp</a></li>
+                                    </ul>
                                 </ul>
                             </li>
-                            <li><a href="#">Contact</a></li>
+                            
                             <li><a asp-controller="Product" asp-action="Add">Add New Product</a></li>
                             <li>
                                 <a asp-controller="User" asp-action="Details">
