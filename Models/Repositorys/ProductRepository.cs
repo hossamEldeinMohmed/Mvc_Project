@@ -17,7 +17,9 @@ namespace Mvc_Project.Models.Repositorys
         public List<Product> GetAll()
         {
             return _context.Products
+                .Where(p => p.Status != "Pending" && p.Status != "Rejected")
                 .Include(p => p.Category)
+                .Include(p => p.User)
                 .Include(p => p.ProductAttributes)
                 .Include(p => p.ProductReviews)
                 .ToList();
@@ -25,9 +27,11 @@ namespace Mvc_Project.Models.Repositorys
         public List<Product> GetAllRandomly()
         {
             return _context.Products
+                .Where(p => p.Status != "Pending" && p.Status != "Rejected")
                 .Include(p => p.Category)                
                 .Include(p => p.ProductAttributes)
                 .Include(p => p.ProductReviews)
+                
                 .OrderBy(p => Guid.NewGuid())  // Randomly sort the products
                 .ToList();
         }
@@ -93,6 +97,48 @@ namespace Mvc_Project.Models.Repositorys
         {
             return _context.Categories.ToList();
         }
+
+        public List<Product> GetAllWithUser()
+        {
+            return _context.Products
+                .Where(p => p.Status != "Accepted" && p.Status != "Rejected")
+                .Include(p => p.User) 
+                .Include(p => p.Category)
+                
+                .ToList();
+        }
+
+        public List<Product> GetAllRejected()
+        {
+            return _context.Products
+                .Where(p => p.Status != "Accepted" && p.Status != "Pending")
+                .Include(p => p.User)
+                .Include(p => p.Category)
+
+                .ToList();
+        }
+
+        public List<Product> SearchAdvancedProducts(string searchTerm)
+        {
+          
+            var lowerSearchTerm = searchTerm.ToLower();
+
+
+
+            return _context.Products
+          .Where(p => p.Status != "Pending" && p.Status != "Rejected")
+         .Where(p => p.Name != null && p.Name.ToLower().Contains(lowerSearchTerm) ||
+                     p.Description != null && p.Description.ToLower().Contains(lowerSearchTerm) ||
+                     p.Category != null && p.Category.Name != null && p.Category.Name.ToLower().Contains(lowerSearchTerm) ||
+                     p.User != null && p.User.UserName != null && p.User.UserName.ToLower().Contains(lowerSearchTerm))
+         .Include(p => p.Category)
+         
+         .Include(p => p.User)
+         .ToList();
+        }
+
+
+
 
 
     }
