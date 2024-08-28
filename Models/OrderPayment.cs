@@ -12,7 +12,7 @@ namespace Mvc_Project.Models
         public int PaymentMethodId { get; set; }
         public PaymentMethod PaymentMethod { get; set; }
 
-        public decimal Amount { get; set; }
+        public int Amount { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
     }

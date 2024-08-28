@@ -98,7 +98,8 @@ namespace Mvc_Project.Models.Repositorys
 
         public int Count()  
         {
-            return _context.Products.Count();
+             return _context.Products.Count();
+ 
         }
     }
 }
