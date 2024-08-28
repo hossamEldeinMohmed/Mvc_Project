@@ -17,7 +17,7 @@ namespace Mvc_Project.Models
       
         public string Address { get; set; }
 
-        public decimal TotalAmount { get; set; }
+        public int TotalAmount { get; set; }
         public string Status { get; set; } // 'pending', 'processing', 'shipped', etc.
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }

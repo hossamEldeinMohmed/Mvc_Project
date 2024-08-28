@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Drawing.Printing;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Mvc_Project.Models.Repositorys.Mvc_Project.Models.Repositorys;
@@ -24,15 +25,16 @@ namespace Mvc_Project.Models.Repositorys
                 .Include(p => p.ProductReviews)
                 .ToList();
         }
-        public List<Product> GetAllRandomly()
+
+        public List<Product> GetAllRandomly(int pageNumber, int pageSize)
         {
             return _context.Products
                 .Where(p => p.Status != "Pending" && p.Status != "Rejected")
                 .Include(p => p.Category)                
                 .Include(p => p.ProductAttributes)
                 .Include(p => p.ProductReviews)
-                
-                .OrderBy(p => Guid.NewGuid())  // Randomly sort the products
+                .OrderBy(p => Guid.NewGuid()).Skip((pageNumber - 1) * pageSize).Take(pageSize)
+
                 .ToList();
         }
         public Product GetByID(int id)
@@ -41,6 +43,7 @@ namespace Mvc_Project.Models.Repositorys
                 .Include(p => p.Category)
                 .Include(p => p.ProductAttributes)
                 .Include(p => p.ProductReviews)
+                .Include(P=>P.ProductImges)
                 .FirstOrDefault(p => p.Id == id);
         }
 

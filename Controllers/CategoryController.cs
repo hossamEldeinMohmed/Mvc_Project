@@ -16,35 +16,35 @@ namespace Mvc_Project.Controllers
 
         public IActionResult Dresses(int id = 1)
         {
-            var products = _productRepository.GetAll().Where(p => p.CategoryId == id).ToList();
+            var products = _productRepository.GetAll().Where(p => p.CategoryId == id).Take(12).ToList();
             
                 return View("Dresses", products);
 
         }
         public IActionResult Tops(int id = 2)
         {
-            var products = _productRepository.GetAll().Where(p => p.CategoryId == id).ToList();
+            var products = _productRepository.GetAll().Where(p => p.CategoryId == id).Take(12).ToList();
 
             return View("Tops", products);
 
         }
         public IActionResult Bottoms(int id = 3)
         {
-            var products = _productRepository.GetAll().Where(p => p.CategoryId == id).ToList();
+            var products = _productRepository.GetAll().Where(p => p.CategoryId == id).Take(12).ToList();
 
             return View("Bottoms", products);
 
         }
         public IActionResult Shoes(int id = 4)
         {
-            var products = _productRepository.GetAll().Where(p => p.CategoryId == id).ToList();
+            var products = _productRepository.GetAll().Where(p => p.CategoryId == id).Take(12).ToList();
 
             return View("Shoes", products);
 
         }
         public IActionResult AccessoriesAndMakeUp(int id = 5)
         {
-            var products = _productRepository.GetAll().Where(p => p.CategoryId == id).ToList();
+            var products = _productRepository.GetAll().Where(p => p.CategoryId == id).Take(12).ToList();
 
             return View("AccessoriesAndMakeUp", products);
 

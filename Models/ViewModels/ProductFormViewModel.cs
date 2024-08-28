@@ -3,14 +3,16 @@ using System.Collections.Generic;
 
 namespace Mvc_Project.Models.ViewModels
 {
-    public class ProductViewModel
+    public class ProductFormViewModel
     {
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public string? CategoryName { get; set; }
-        public int Price { get; set; }
-        public List<string>? ProductImages { get; set; }
+        public decimal Price { get; set; }
+        public List<IFormFile>? ProductImageFormFile { get; set; }
+        public List<ProductImages>? ProductImages { get; set; }=new List<ProductImages>();
+
 
         // Add the CategoryList property
         public List<SelectListItem>? CategoryList { get; set; }

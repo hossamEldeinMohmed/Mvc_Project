@@ -19,6 +19,9 @@ namespace Mvc_Project.Models.Repositorys
 
 
 
+            List<Product> GetAllRandomly(int pageNumber, int pageSize);
+            int Count();
+       
 
 
 

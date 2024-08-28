@@ -21,7 +21,6 @@ namespace Mvc_Project
             {
                 option.UseSqlServer(builder.Configuration.GetConnectionString("connectionString"));
             });
-
             builder.Services.AddScoped<IProductRepository, ProductRepository>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IOrderRepository, OrderRepository>();
@@ -32,7 +31,7 @@ namespace Mvc_Project
             //////////Email////////////////
             var emailConfig = builder.Configuration.GetSection("EmailSettings");
 
-            
+
             builder.Services.AddTransient<IEmailSender>(sp =>
                 new EmailSenderRepository(
                     emailConfig["SmtpServer"],
@@ -41,19 +40,19 @@ namespace Mvc_Project
                     emailConfig["SmtpPass"]
                 )
             );
-          
+
             ////////////////////////////////
             ////////iIdentity///////
 
 
-            builder.Services.AddIdentity<User,IdentityRole<int>>(options =>
+            builder.Services.AddIdentity<User, IdentityRole<int>>(options =>
             {
 
                 options.Tokens.ProviderMap.Add("Default", new TokenProviderDescriptor(typeof(DataProtectorTokenProvider<User>)));
                 options.Tokens.EmailConfirmationTokenProvider = "Default";
                 options.Tokens.PasswordResetTokenProvider = "Default";
             })
-                .AddEntityFrameworkStores<Context>().AddDefaultTokenProviders(); 
+                .AddEntityFrameworkStores<Context>().AddDefaultTokenProviders();
 
             /////////////////////////////////
 

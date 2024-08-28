@@ -39,36 +39,6 @@ namespace Mvc_Project.Models
 
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-
-            
-            modelBuilder.Entity<Product>()
-                .Property(p => p.Price)
-                .HasColumnType("decimal(18, 2)"); 
-
-            modelBuilder.Entity<SellerProduct>()
-                .Property(sp => sp.Price)
-                .HasColumnType("decimal(18, 2)");
-
-            modelBuilder.Entity<Coupon>()
-                .Property(c => c.DiscountAmount)
-                .HasColumnType("decimal(18, 2)");
-
-            modelBuilder.Entity<Order>()
-                .Property(o => o.TotalAmount)
-                .HasColumnType("decimal(18, 2)");
-
-            modelBuilder.Entity<OrderCoupon>()
-                .Property(oc => oc.DiscountAmount)
-                .HasColumnType("decimal(18, 2)");
-
-            modelBuilder.Entity<OrderPayment>()
-                .Property(op => op.Amount)
-                .HasColumnType("decimal(18, 2)");
-        }
-
 
 
 
