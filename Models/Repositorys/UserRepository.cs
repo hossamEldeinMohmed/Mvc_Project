@@ -61,6 +61,11 @@
                     .Where(u => u.UserRoles.Any(ur => ur.RoleId == roleId))
                     .ToList();
             }
+
+            public User GetByName(string name)
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 

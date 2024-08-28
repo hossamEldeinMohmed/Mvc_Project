@@ -98,13 +98,13 @@
                 <div class="product-images">
                     @foreach (var image in Model.ProductImages)
                     {
-                        <img src="@Url.Content("~/ProductFile/" + image.FileName)" alt="Product Image" class="img-fluid" />
+                        <img src="@Url.Content("~/images/" + image)" alt="Product Image" class="img-fluid" />
                     }
                 </div>
             </div>
         }
 
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
-    <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Done</a>
-</div>
+        <div>
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+            <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Done</a>
+        </div>

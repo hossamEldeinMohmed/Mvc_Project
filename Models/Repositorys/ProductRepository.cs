@@ -18,12 +18,19 @@ namespace Mvc_Project.Models.Repositorys
         public List<Product> GetAll()
         {
             return _context.Products
-                .Include(p => p.Category)
-                .Include(p => p.ProductAttributes)
-                .Include(p => p.ProductReviews)
-                .Include(P =>P.ProductImges)
+                .Select(p => new
+                {
+                    Product = p,
+                    Category = p.Category,
+                    ProductAttributes = p.ProductAttributes,
+                    ProductReviews = p.ProductReviews,
+                    ProductImges = p.ProductImges
+                })
+                .AsEnumerable() // Continue with LINQ to Objects if necessary
+                .Select(p => p.Product) // Extract the product
                 .ToList();
         }
+
         public List<Product> GetAllRandomly(int pageNumber, int pageSize)
         {
             return _context.Products
