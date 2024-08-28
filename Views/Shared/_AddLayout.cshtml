@@ -63,15 +63,13 @@
         </div>
     </div>
     <!-- Offcanvas Menu End -->
-    <!-- Header Section Begin -->
     <header class="header">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-xl-3 col-lg-2">
                     <div class="header__logo">
                         <a asp-controller="Home" asp-action="Index">
-                            <img style="width:150px;
-	                                    height:50px;" src="~/img/logo.webp" alt="Logo">
+                            <img style="width:150px; height:50px;" src="~/img/logo.webp" alt="Logo">
                         </a>
                     </div>
                 </div>
@@ -79,33 +77,39 @@
                     <nav class="header__menu">
                         <ul>
                             <li ><a asp-controller="Home" asp-action="Index">Home</a></li>
-                            <li >
+                            <li>
                                 <a href="#">Women’s</a>
                                 <ul class="dropdown">
-                                    <li><a asp-controller="Category" asp-action="Dresses">Dresses</a></li>
-                                    <li><a asp-controller="Category" asp-action="Tops">Tops</a></li>
-                                    <li><a asp-controller="Category" asp-action="Bottoms">Bottoms</a></li>
-                                    <li><a asp-controller="Category" asp-action="Shoes">Shoes</a></li>
-                                    <li><a asp-controller="Category" asp-action="AccessoriesAndMakeUp">Accessories & MakeUp</a></li>
+                                    <!-- Dropdown items -->
                                 </ul>
                             </li>
-                            
                             <li><a href="#">Contact</a></li>
-                            <li class="active"><a asp-controller="Product" asp-action="Add">Add New Product</a></li>
-                            <li class="active"><a asp-controller="User" asp-action="UserProfile">User profile</a></li>
-
+                            <li ><a asp-controller="Product" asp-action="Add">Add New Product</a></li>
+                            <li>
+                                <a asp-controller="User" asp-action="Details">
+                                    User profile
+                                    @if (ViewBag.ProfileImageUrl != null)
+                                    {
+                                        <img src="~/images/@ViewBag.ProfileImageUrl" alt="Profile Image" style="width: 40px; height: 40px; border-radius: 50%; margin-left: 5px;" />
+                                    }
+                                </a>
+                            </li>
                         </ul>
                     </nav>
                 </div>
                 <div class="col-lg-3">
                     <div class="header__right">
-                        <div class="header__right__auth">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <a asp-controller="Account" asp-action="SignOut">Logout</a>
+                        }
+                        else
+                        {
                             <a asp-controller="Account" asp-action="Login">Login</a>
                             <a asp-controller="Account" asp-action="Register">Register</a>
-                        </div>
+                        }
                         <ul class="header__right__widget">
                             <li><span class="icon_search search-switch"></span></li>
-                            
                             <li>
                                 <a href="#">
                                     <span class="icon_bag_alt"></span>

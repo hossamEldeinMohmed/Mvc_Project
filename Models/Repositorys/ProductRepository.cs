@@ -43,19 +43,20 @@ namespace Mvc_Project.Models.Repositorys
                 .Include(p => p.Category)
                 .Include(p => p.ProductAttributes)
                 .Include(p => p.ProductReviews)
-                .Include(P=>P.ProductImges)
+                
                 .FirstOrDefault(p => p.Id == id);
         }
 
-       //public List<Product> showCategory(int id)
-       // {
-       //     return _context.Products
-       //          .Include(p => p.Category)
-       //          .Include(p => p.ProductAttributes)
-       //          .Include(p => p.ProductReviews)
-       //          .Where(p => p.CategoryId == id)  // filtered by category id
-       //          .ToList();
-       // }
+         
+        //public List<Product> showCategory(int id)
+        // {
+        //     return _context.Products
+        //          .Include(p => p.Category)
+        //          .Include(p => p.ProductAttributes)
+        //          .Include(p => p.ProductReviews)
+        //          .Where(p => p.CategoryId == id)  // filtered by category id
+        //          .ToList();
+        // }
 
         public void Add(Product newProduct)
         {
@@ -148,6 +149,10 @@ namespace Mvc_Project.Models.Repositorys
         public int Count()
         {
             return _context.Products.Count();
+        }
+        public Product getProuductWithUset(int id)
+        {
+          return  _context.Products.Include(p => p.User).FirstOrDefault(p => p.Id == id);
         }
     }
 }

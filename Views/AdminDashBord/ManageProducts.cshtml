@@ -26,12 +26,12 @@
                 <td>@product.User?.UserName</td>
                 <td>@product.Name</td>
                 <td>
-                    @foreach (var photo in @product.ProductImges)
+                    @foreach (var photo in product.ProductImges)
                     {
                         <img src="~/images/@photo" alt="Product Image" style="width: 100px; height: 100px;" />
                     }
                 </td>
-                <td>@product.Price</td>
+                <td>@product.Price.ToString("C")</td>
                 <td>@product.Category?.Name</td>
                 <td>@product.Description</td>
                 <td>@product.Status</td>
@@ -49,11 +49,13 @@
                             </div>
                         </form>
                     }
-                  @*   else if (product.Status == "Rejected")
-                    {
-                        <span class="text-danger">Rejected</span>
-                        <p>Reason: @product.RejectReason</p>
-                    } *@
+                    @* Uncomment this if you want to display rejection details
+                else if (product.Status == "Rejected")
+                {
+                <span class="text-danger">Rejected</span>
+                <p>Reason: @product.RejectReason</p>
+                }
+                *@
                 </td>
             </tr>
         }
@@ -76,4 +78,3 @@
         }
     </script>
 }
-

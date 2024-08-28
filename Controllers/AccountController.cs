@@ -123,7 +123,7 @@ namespace Mvc_Project.Controllers
                     {
 
                       await   signInManager.SignInAsync(UserFromDB, UserLoginFromRequst.RememberMe);
-                        return RedirectToAction();
+                        return RedirectToAction("index","Home");
                     }
 
                 }

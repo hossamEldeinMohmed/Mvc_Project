@@ -12,7 +12,7 @@ namespace Mvc_Project.Models.Repositorys
             List<Product> GetAllRandomly();
             public List<Product> GetAllWithUser();
             public List<Product> GetAllRejected();
-
+            public Product getProuductWithUset(int id);
             public List<Product> SearchAdvancedProducts(string searchTerm);
 
 

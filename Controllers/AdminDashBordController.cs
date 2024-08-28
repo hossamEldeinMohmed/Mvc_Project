@@ -43,6 +43,7 @@ namespace Mvc_Project.Controllers
         }
 
         [HttpPost]
+        [HttpPost]
         public IActionResult UpdateProductStatus(int productId, string status, string rejectReason)
         {
             var product = _productRepository.GetByID(productId);
@@ -54,8 +55,6 @@ namespace Mvc_Project.Controllers
                 if (status == "Rejected")
                 {
                     var rejectionMessage = $"Your product '{product.Name}' has been rejected. Reason: {rejectReason}";
-
-                    
                     notification.AddNotification(product.UserId, rejectionMessage);
                 }
 
@@ -64,6 +63,7 @@ namespace Mvc_Project.Controllers
 
             return RedirectToAction("ManageProducts");
         }
+
 
         public IActionResult RejectedProductes()
         {

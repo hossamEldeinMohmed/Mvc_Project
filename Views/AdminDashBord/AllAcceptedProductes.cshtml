@@ -6,11 +6,9 @@
 
 <html>
 <body>
-    <!-- DataTales Example -->
     <div class="container-fluid">
         <h1 class="h3 mb-2 text-gray-800">Product List</h1>
 
-        <!-- DataTales Example -->
         <div class="card shadow mb-4">
             <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">Accepted Products</h6>
@@ -20,25 +18,9 @@
                 <div class="table-responsive">
                     <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
 
-                        <!-- Show entries and Search -->
                         <div class="row">
                             <div class="col-sm-12 col-md-6">
-                                <div class="dataTables_length" id="dataTable_length">
-                                    @* <label>
-                                        Show
-                                        <select name="dataTable_length" aria-controls="dataTable" class="custom-select custom-select-sm form-control form-control-sm">
-                                            <option value="10">10</option>
-                                            <option value="25">25</option>
-                                            <option value="50">50</option>
-                                            <option value="100">100</option>
-                                        </select>
-                                        entries
-                                    </label> *@
-                                </div>
-                            </div>
-
-                            <div class="col-sm-12 col-md-6 " style="margin-left:20px">
-                         
+                                <!-- Search form -->
                                 <form method="get" action="@Url.Action("ProductList")">
                                     <div id="dataTable_filter" class="dataTables_filter">
                                         <label>
@@ -51,7 +33,6 @@
                             </div>
                         </div>
 
-                        <!-- Table -->
                         <div class="row">
                             <div class="col-sm-12">
                                 <table class="table table-bordered dataTable" id="dataTable" width="100%" cellspacing="0" role="grid" aria-describedby="dataTable_info" style="width: 100%;">
@@ -81,7 +62,9 @@
                                                 <td>@product.Price.ToString("C")</td>
                                                 <td>@product.Category?.Name</td>
                                                 <td>@product.User?.UserName</td>
-                                                <td> <button type="submit" name="status" value="Accepted" style="background-color:#de7c7c; color:white;" class="btn ">More Details</button></td>
+                                                <td>
+                                                    <button type="submit" name="status" value="Accepted" style="background-color:#de7c7c; color:white;" class="btn ">More Details</button>
+                                                </td>
                                             </tr>
                                         }
                                     </tbody>
@@ -89,7 +72,6 @@
                             </div>
                         </div>
 
-                        <!-- Pagination -->
                         <div class="row">
                             <div class="col-sm-12 col-md-5">
                                 <div class="dataTables_info" id="dataTable_info" role="status" aria-live="polite">
@@ -121,7 +103,5 @@
             </div>
         </div>
     </div>
-
 </body>
 </html>
-
