@@ -140,9 +140,14 @@ namespace Mvc_Project.Models.Repositorys
          .ToList();
         }
 
+        public List<Product> GetAllRandomly()
+        {
+            throw new NotImplementedException();
+        }
 
-
-
-
+        public int Count()
+        {
+            return _context.Products.Count();
+        }
     }
 }

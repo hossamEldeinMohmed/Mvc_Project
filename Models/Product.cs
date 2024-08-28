@@ -16,7 +16,7 @@ namespace Mvc_Project.Models
         public DateTime UpdatedAt { get; set; }
         public int Price { get; set; }
         [ForeignKey("User")]
-        public int? UserId { get; set; }
+        public int UserId { get; set; }
         public User User { get; set; }
         public string Status { get; set; } = "Pending";
 
@@ -27,7 +27,7 @@ namespace Mvc_Project.Models
         public List<ProductTagMapping> ProductTagMappings { get; set; } 
         public List<WishlistItem> WishlistItems { get; set; } 
         public List<CartItem> CartItems { get; set; }
-        public string Status { get; set; } = "Pending";
+      
 
         public List<string>? ProductImges { get; set; }
     }
