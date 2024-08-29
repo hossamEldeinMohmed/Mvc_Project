@@ -30,6 +30,16 @@ namespace Mvc_Project.Controllers
 
             return View(AllProducts);
         }
+        public IActionResult Search(string searchString)
+        {
+            searchString = String.IsNullOrEmpty(searchString) ? "" : searchString.ToLower();
+            var products = _productRepository.GetAll();
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                products = products.Where(p => (p.Name).ToLower().Contains(searchString)).ToList();
+            }
+            return View("Index",products);
+        }
 
         public IActionResult Privacy()
         {
