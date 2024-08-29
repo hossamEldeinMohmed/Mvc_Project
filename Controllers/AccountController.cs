@@ -72,8 +72,8 @@ namespace Mvc_Project.Controllers
                     await userManager.AddToRoleAsync(userToDb, "vendor");
 
                     var confirmationToken = await userManager.GenerateEmailConfirmationTokenAsync(userToDb);
-                    await SendConfirmationEmailAsync(userToDb, confirmationToken);
-
+                  /*  await SendConfirmationEmailAsync(userToDb, confirmationToken);
+*/
 
                    /* //make cookie
 
@@ -123,7 +123,8 @@ namespace Mvc_Project.Controllers
                     {
 
                       await   signInManager.SignInAsync(UserFromDB, UserLoginFromRequst.RememberMe);
-                        return RedirectToAction();
+
+                        return RedirectToAction("Index", "Home");
                     }
 
                 }
@@ -135,7 +136,15 @@ namespace Mvc_Project.Controllers
         }
 
 
-        public async Task<IActionResult>ConfirmEmail(string userId, string token)
+        public async Task<IActionResult> SignOut()
+        {
+            await signInManager.SignOutAsync();
+
+            return RedirectToAction("Index", "Home");
+
+        }
+
+            public async Task<IActionResult>ConfirmEmail(string userId, string token)
         {
             if(userId == null || token == null)
             {
@@ -161,6 +170,8 @@ namespace Mvc_Project.Controllers
             ViewBag.IsEmailConfirmed = false;
             return View("Confirmation");
         }
+
+
 
         public async Task<IActionResult> ConfirmOrResendEmail(string userId, string token = null)
         {
@@ -218,7 +229,7 @@ namespace Mvc_Project.Controllers
         <p>Thank you for registering with us. Please confirm your email address by clicking the link below:</p>
         <p><a href='{confirmationLink}'>Confirm your email</a></p>
         <p>If you did not create an account, no further action is required.</p>
-        <p>Best regards,<br/> Cloth Carousel Team</p>";
+        <p>Best regards,<br/> She Shares Team</p>";
 
             await emailSender.SendEmailAsync(user.Email, emailSubject, emailBody);
         }

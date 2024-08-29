@@ -8,5 +8,7 @@
 
         public void Update(T updatedObjectModel);
         public void Delete(int id);
+
+      
     }
 }

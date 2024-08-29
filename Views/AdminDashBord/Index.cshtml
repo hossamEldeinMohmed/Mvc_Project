@@ -6,48 +6,150 @@
 
 }
 
-<h1>DashBord</h1>
+
+
+@* <html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Dashboard</title>
 
 
 
+    <!-- Custom fonts for this template-->
+    <link href="~/admindashbord/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+          rel="stylesheet">
 
-<p>sadjsadfkfsnkcknzkncsdcjdcnsdcsdc
-    csdkmcsmdcmsdmkcsdcs
-    dcsdcsdcsmdcsmdcsd
-    csdcsdmcmsdcmsdlkcmsdc'
-    sdc'sdcksldmcsa
-    dcS'csadnclsamdcsd'c
-    sd
-    cas
-    vasjdsasnknsjdncsdnc
-</p>
+    <!-- Custom styles for this template-->
 
-@* <div>
-    <h4>DashboardViewModel</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TotalOrders)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TotalOrders)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TotalProducts)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TotalProducts)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TotalCategories)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TotalCategories)
-        </dd>
-    </dl>
+
+    <link href="~/admindashbord/css/sb-admin-2.min.css" rel="stylesheet" />
+
+    <style>
+
+        .addColor {
+            /*  background-color: #f5afab; */
+            background-color: #de7c7c;
+        }
+
+        addColor:hover {
+            /*  background-color: #f5afab; */
+            background-color: #de7c7c !important;
+        }
+
+
+
+        .sidebar-divider {
+            background-color: white;
+        }
+
+        .my-0 {
+            background-color: white;
+        }
+
+        .FontWeight {
+            font-weight: 800;
+        }
+
+    </style>
+
+</head>
+<body id="page-top">
+<!-- Earnings (Monthly) Card Example -->
+<div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-primary shadow h-100 py-2">
+        <div class="card-body">
+            <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                        Earnings (Monthly)
+                    </div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
+                </div>
+                <div class="col-auto">
+                    <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    <a asp-action="Index">Back to List</a>
+
+<!-- Earnings (Monthly) Card Example -->
+<div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-success shadow h-100 py-2">
+        <div class="card-body">
+            <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                        Earnings (Annual)
+                    </div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
+                </div>
+                <div class="col-auto">
+                    <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
- *@
+
+<!-- Earnings (Monthly) Card Example -->
+<div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-info shadow h-100 py-2">
+        <div class="card-body">
+            <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                        Tasks
+                    </div>
+                    <div class="row no-gutters align-items-center">
+                        <div class="col-auto">
+                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
+                        </div>
+                        <div class="col">
+                            <div class="progress progress-sm mr-2">
+                                <div class="progress-bar bg-info" role="progressbar"
+                                     style="width: 50%" aria-valuenow="50" aria-valuemin="0"
+                                     aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Pending Requests Card Example -->
+<div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-warning shadow h-100 py-2">
+        <div class="card-body">
+            <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                        Pending Requests
+                    </div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                </div>
+                <div class="col-auto">
+                    <i class="fas fa-comments fa-2x text-gray-300"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+                    </div>
+
+
+</body>
+</html> *@

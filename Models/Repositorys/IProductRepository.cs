@@ -1,4 +1,6 @@
-﻿namespace Mvc_Project.Models.Repositorys
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace Mvc_Project.Models.Repositorys
 {
     namespace Mvc_Project.Models.Repositorys
     {
@@ -8,11 +10,19 @@
             List<Product> SearchProducts(string searchTerm);
             List<Category> GetAllCategories();
             List<Product> GetAllRandomly();
-       
+            public List<Product> GetAllWithUser();
+            public List<Product> GetAllRejected();
+
+            public List<Product> SearchAdvancedProducts(string searchTerm);
 
 
 
-        }
+
+
+
+
+
+            }
     }
 
 }

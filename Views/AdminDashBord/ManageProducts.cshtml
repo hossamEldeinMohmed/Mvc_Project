@@ -1,0 +1,84 @@
+﻿@model List<Product>
+
+@{
+    Layout = "_AdminDashBordLayout";
+}
+
+<h2>Manage Products</h2>
+
+<table class="table border">
+    <thead>
+        <tr>
+            <th>Username</th>
+            <th>Product Name</th>
+            <th>Product Image</th>
+            <th>Price</th>
+            <th>Category</th>
+            <th>Description</th>
+            <th>Status</th>
+            @foreach (var product in Model){
+                @if (product.Status == "Pending")
+                {
+                    <th>Action</th>
+                }
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model)
+        {
+            <tr>
+                <td>@product.User?.UserName</td>
+                <td>@product.Name</td>
+                <td>
+                    @foreach (var photo in @product.ProductImges)
+                    {
+                        <img src="~/images/@photo" alt="Product Image" style="width: 100px; height: 100px;" />
+                    }
+                </td>
+                <td>@product.Price</td>
+                <td>@product.Category?.Name</td>
+                <td>@product.Description</td>
+                <td>@product.Status</td>
+                <td>
+                    @if (product.Status == "Pending")
+                    {
+                        <form asp-action="UpdateProductStatus" method="post" onsubmit="return confirmReject(this);">
+                            <input type="hidden" name="productId" value="@product.Id" />
+                            <button type="submit" name="status" value="Accepted" class="btn btn-success">Accept</button>
+                            <button type="button" class="btn btn-danger" onclick="showRejectReasonBox(this);">Reject</button>
+
+                            <div class="reject-reason-box" style="display: none; margin-top: 10px;">
+                                <textarea name="rejectReason" class="form-control" placeholder="Enter the reason for rejection"></textarea>
+                                <button type="submit" name="status" value="Rejected" class="btn btn-danger" style="margin-top: 10px;">Submit Rejection</button>
+                            </div>
+                        </form>
+                    }
+                  @*   else if (product.Status == "Rejected")
+                    {
+                        <span class="text-danger">Rejected</span>
+                        <p>Reason: @product.RejectReason</p>
+                    } *@
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script>
+        function showRejectReasonBox(button) {
+            var rejectBox = button.parentNode.querySelector('.reject-reason-box');
+            rejectBox.style.display = 'block';
+        }
+
+        function confirmReject(form) {
+            if (form.status.value === 'Rejected' && !form.rejectReason.value.trim()) {
+                alert('Please provide a reason for rejection.');
+                return false;
+            }
+            return true;
+        }
+    </script>
+}
+

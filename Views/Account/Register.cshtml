@@ -2,58 +2,126 @@
 
 @{
     ViewData["Title"] = "Register";
+    Layout = null;
 }
 
-<h1>Register</h1>
+<!DOCTYPE html>
+<html lang="en">
 
-@* <h4>RegisterUserViewModel</h4> *@
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="SaveRegister">
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="UserName" class="control-label"></label>
-                <input asp-for="UserName" class="form-control" />
-                <span asp-validation-for="UserName" class="text-danger"></span>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>@ViewData["Title"]</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="~/AdminDashbord/">
+
+    <link href="~/AdminDashbord/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="~/AdminDashbord/css/sb-admin-2.min.css" rel="stylesheet">
+    <style>
+        .bg-gradient-pink {
+            background-color: #f5afab;
+            background-image: #edc099;
+            background-size: cover;
+        }
+
+        .bg-register-image {
+            background-image: url('/images/Login.jpg');
+            background-size: cover;
+            background-position: left;
+        }
+    </style>
+</head>
+
+<body class="bg-gradient-pink">
+
+    <div class="container">
+        <div class="card o-hidden border-0 shadow-lg my-5">
+            <div class="card-body p-0">
+                <div class="row">
+                    <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
+                    <div class="col-lg-7">
+                        <div class="p-5">
+                            <div class="text-center">
+                                <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
+                            </div>
+                            <form asp-action="SaveRegister" class="user">
+                                <div asp-validation-summary="All" class="text-danger"></div>
+
+                                <div class="form-group">
+                                    
+                                    <input asp-for="UserName" class="form-control form-control-user" placeholder="Username" />
+                                    <span asp-validation-for="UserName" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group">
+                                   @*  <label asp-for="Password" class="control-label"></label> *@
+                                    <input asp-for="Password" type="password" class="form-control form-control-user" placeholder="Password" />
+                                    <span asp-validation-for="Password" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group">
+                                   @*  <label asp-for="ConfirmPassword" class="control-label"></label> *@
+                                    <input asp-for="ConfirmPassword" type="password" class="form-control form-control-user" placeholder="Confirm Password" />
+                                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group">
+                                   @*  <label asp-for="Email" class="control-label"></label> *@
+                                    <input asp-for="Email" type="email" class="form-control form-control-user" placeholder="Email Address" />
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    @* <label asp-for="ConfirmedEmail" class="control-label"></label> *@
+                                    <input asp-for="ConfirmedEmail" type="email" class="form-control form-control-user" placeholder="Confirm Email" />
+                                    <span asp-validation-for="ConfirmedEmail" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group">
+                                   @*  <label asp-for="PhoneNumber" class="control-label"></label> *@
+                                    <input asp-for="PhoneNumber" class="form-control form-control-user" placeholder="Phone Number" />
+                                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                </div>
+
+                                <input type="submit" value="Create" class="btn btn-primary btn-user btn-block" style="background-color:#f5afab ;" />
+                            </form>
+                            <hr>
+                            <div class="text-center">
+                                <a class="small" href="forgot-password.html">Forgot Password?</a>
+                            </div>
+                            <div class="text-center">
+                                <a class="small" asp-action="Login" asp-controller="Account">Already have an account? Login!</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ConfirmPassword" class="control-label"></label>
-                <input asp-for="ConfirmPassword" class="form-control" />
-                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ConfirmedEmail" class="control-label"></label>
-                <input asp-for="ConfirmedEmail" class="form-control" />
-                <span asp-validation-for="ConfirmedEmail" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PhoneNumber" class="control-label"></label>
-                <input asp-for="PhoneNumber" class="form-control" />
-                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-            </div>
-            
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    <!-- Bootstrap core JavaScript-->
+    <script src="~/AdminDashbord/vendor/jquery/jquery.min.js"></script>
+    <script src="~/AdminDashbord/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    <!-- Core plugin JavaScript-->
+    <script src="~/AdminDashbord/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="~/AdminDashbord/js/sb-admin-2.min.js"></script>
+
+    @section Scripts {
+        @{
+            await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        }
+    }
+</body>
+
+</html>

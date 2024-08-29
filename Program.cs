@@ -15,6 +15,7 @@ namespace Mvc_Project
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 
             builder.Services.AddDbContext<Context>(option =>
             {
@@ -24,6 +25,12 @@ namespace Mvc_Project
             builder.Services.AddScoped<IProductRepository, ProductRepository>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+           
+            
+            builder.Services.AddScoped<ICategory, CategoryRepository>();
+
+
+            builder.Services.AddScoped<INotification, NotificationRepository>();
 
             //////////Email////////////////
             var emailConfig = builder.Configuration.GetSection("EmailSettings");
