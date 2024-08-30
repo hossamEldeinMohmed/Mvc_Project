@@ -31,8 +31,24 @@ namespace Mvc_Project.Controllers
             }
             return View(products);
         }
+        public IActionResult Details (int id)
+        {
+            var product = _productRepository.getProuductWithUset(id);
 
-        public IActionResult Details(int id)
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            var viewModel = new ProductUserViewModel
+            {
+                Product = product,
+                User = product.User
+            };
+
+            return View(viewModel);
+        }
+        public IActionResult ProductDetails(int id)
         {
             var product = _productRepository.GetByID(id);
             if (product == null)
@@ -136,6 +152,8 @@ namespace Mvc_Project.Controllers
                 _productRepository.Add(product);
 
                 return RedirectToAction("Index");
+
+
             }
 
             var categories = _productRepository.GetAllCategories();

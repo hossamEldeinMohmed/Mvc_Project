@@ -53,7 +53,7 @@
         <div class="offcanvas__logo">
             <a asp-controller="Home" asp-action="Index">
                 <img style="width:150px;
-	                                    height:50px;" src="~/img/logo.webp" alt="Logo">
+	                                    height:50px;" src="~/img/DressCode-logo.png" alt="Logo">
             </a>
         </div>
         <div id="mobile-menu-wrap"></div>
@@ -63,15 +63,13 @@
         </div>
     </div>
     <!-- Offcanvas Menu End -->
-    <!-- Header Section Begin -->
     <header class="header">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-xl-3 col-lg-2">
                     <div class="header__logo">
                         <a asp-controller="Home" asp-action="Index">
-                            <img style="width:150px;
-	                                    height:50px;" src="~/img/logo.webp" alt="Logo">
+                            <img style="width:150px; height:50px;" src="~/img/logo.webp" alt="Logo">
                         </a>
                     </div>
                 </div>
@@ -79,7 +77,7 @@
                     <nav class="header__menu">
                         <ul>
                             <li ><a asp-controller="Home" asp-action="Index">Home</a></li>
-                            <li >
+                            <li>
                                 <a href="#">Women’s</a>
                                 <ul class="dropdown">
                                     <li><a asp-controller="Category" asp-action="Dresses">Dresses</a></li>
@@ -89,21 +87,33 @@
                                     <li><a asp-controller="Category" asp-action="AccessoriesAndMakeUp">Accessories & MakeUp</a></li>
                                 </ul>
                             </li>
-                            
-                            <li><a href="#">Contact</a></li>
-                            <li class="active"><a asp-controller="Product" asp-action="Add">Add New Product</a></li>
+                         
+                            <li ><a asp-controller="Product" asp-action="Add">Add New Product</a></li>
+                            <li>
+                                <a asp-controller="User" asp-action="Details">
+                                    User profile
+                                    @if (ViewBag.ProfileImageUrl != null)
+                                    {
+                                        <img src="~/images/@ViewBag.ProfileImageUrl" alt="Profile Image" style="width: 40px; height: 40px; border-radius: 50%; margin-left: 5px;" />
+                                    }
+                                </a>
+                            </li>
                         </ul>
                     </nav>
                 </div>
                 <div class="col-lg-3">
                     <div class="header__right">
-                        <div class="header__right__auth">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <a asp-controller="Account" asp-action="SignOut">Logout</a>
+                        }
+                        else
+                        {
                             <a asp-controller="Account" asp-action="Login">Login</a>
                             <a asp-controller="Account" asp-action="Register">Register</a>
-                        </div>
+                        }
                         <ul class="header__right__widget">
                             <li><span class="icon_search search-switch"></span></li>
-                            
                             <li>
                                 <a href="#">
                                     <span class="icon_bag_alt"></span>
@@ -132,9 +142,12 @@
                 <div class="col-lg-4 col-md-6 col-sm-7">
                     <div class="footer__about">
                         <div class="footer__logo">
-                            <a asp-controller="Home" asp-action="Index"><img src="~/img/logo.png" alt="Logo"></a>
+                            <a asp-controller="Home" asp-action="Index">
+                                <img style="width:150px;
+	                                    height:50px;" src="~/img/DressCode-logo.png" alt="Logo">
+                            </a>
                         </div>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt cilisis.</p>
+                        <p>Buy and sell pre-loved clothing in great condition at a fraction of the price of new! Discover stylish, long-lasting pieces now, and contribute to sustainability and savings with every purchase.</p>
                         <div class="footer__payment">
                             <a href="#"><img src="~/img/payment/payment-1.png" alt="Payment 1"></a>
                             <a href="#"><img src="~/img/payment/payment-2.png" alt="Payment 2"></a>
@@ -176,7 +189,7 @@
                         <div class="footer__social">
                             <a href="#"><i class="fa fa-facebook"></i></a>
                             <a href="#"><i class="fa fa-linkedin"></i></a>
-                            <a href="#"><i class="material-icons">mail</i>
+                            <a href="#"><i class="fa fa-github"></i>
                             
                         </div>
                     </div>

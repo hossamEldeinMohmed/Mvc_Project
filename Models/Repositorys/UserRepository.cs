@@ -8,7 +8,7 @@
     {
         public class UserRepository : IUserRepository
         {
-            private  Context _context;
+            private Context _context;
 
             public UserRepository(Context context)
             {
@@ -23,8 +23,7 @@
             public User GetByID(int id)
             {
                 return _context.Users
-                    .Include(u => u.UserRoles)
-                    .ThenInclude(ur => ur.Role)
+
                     .FirstOrDefault(u => u.Id == id);
             }
 
@@ -61,6 +60,11 @@
                 return _context.Users
                     .Where(u => u.UserRoles.Any(ur => ur.RoleId == roleId))
                     .ToList();
+            }
+
+            public User GetByName(string name)
+            {
+                throw new NotImplementedException();
             }
         }
     }

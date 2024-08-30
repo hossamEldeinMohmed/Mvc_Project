@@ -19,7 +19,7 @@
             @foreach (var product in Model){
                 @if (product.Status == "Pending")
                 {
-                    <th>Action</th>
+            <th>Action</th>
                 }
             }
         </tr>
@@ -55,9 +55,9 @@
                         </form>
                     }
                   @*   else if (product.Status == "Rejected")
-                    {
-                        <span class="text-danger">Rejected</span>
-                        <p>Reason: @product.RejectReason</p>
+                {
+                <span class="text-danger">Rejected</span>
+                <p>Reason: @product.RejectReason</p>
                     } *@
                 </td>
             </tr>
