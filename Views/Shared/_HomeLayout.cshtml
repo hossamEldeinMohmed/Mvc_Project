@@ -66,11 +66,11 @@
             border-radius: 50%;
             padding: 2px 6px;
             font-size: 12px;
-            visibility: hidden; 
+            visibility: hidden;
         }
 
             #notification-count.visible {
-                visibility: visible; 
+                visibility: visible;
             }
 
 
@@ -157,7 +157,6 @@
             font-size: 14px;
         }
 
-
     </style>
 </head>
 
@@ -242,8 +241,8 @@
                         @if (User.Identity.IsAuthenticated)
                         {
                             <ul class="header__right__widget">
-                                
-                             
+
+
 
 
                                 <ul class="custom-nav">
@@ -282,6 +281,11 @@
 
 
                             </ul>
+                        }
+                        else
+                        {
+                            <a asp-controller="Account" asp-action="Login">Login</a>
+                            <a asp-controller="Account" asp-action="Register">Register</a>
                         }
                     </div>
                 </div>
@@ -361,7 +365,7 @@
     </footer>
     <!-- Footer Section End -->
     <!-- Js Plugins -->
-    
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         // Update notification count in the UI
@@ -464,9 +468,9 @@
                     data: JSON.stringify(notificationIds),
                     success: function (response) {
                         console.log('All notifications marked as read.');
-                        
+
                         updateNotificationCount(0);
-                       
+
                         fetchNotifications();
                     },
                     error: function (xhr, status, error) {
@@ -482,17 +486,17 @@
 
             $('#notification-bell').on('click', function () {
                 console.log('Notification bell clicked.');
-                $('#notification-list').toggle(); 
+                $('#notification-list').toggle();
 
                 markNotificationsAsRead();
 
-               
+
                 setTimeout(function () {
                     fetchReadNotifications();
-                }, 100); 
+                }, 100);
             });
 
-            
+
             $(document).on('click', function (event) {
                 if (!$(event.target).closest('#notification-bell, #notification-list').length) {
                     $('#notification-list').hide();
@@ -508,9 +512,9 @@
 
 
 
-       
 
-   
+
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js?v=1.0"></script>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
