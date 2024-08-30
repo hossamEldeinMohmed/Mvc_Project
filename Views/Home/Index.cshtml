@@ -7,18 +7,60 @@
     .section-title h4:after{
         width : 150px;
     }
+
+    h3:after {
+        width: 100px;
+    }
     
 </style>
+
+<section class="banner set-bg" data-setbg="img/banner/banner-1.jpg" style="background-image: url(../../wwwroot/img/banner/banner-1.jpg); padding-bottom:50px;padding-top:0px;">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-7 col-lg-8 m-auto">
+                <div class="owl-carousel owl-loaded owl-drag">
+                    <div class="owl-stage">
+                        <div class="owl-item cloned">
+                            <div style="padding-top:20%; " class="banner__item">
+                                <div style="text-align:center" class="banner__text">
+                                    <span>Buy anything & Sell anything</span>
+                                    <h1>SHE SHARES</h1>
+                                    <a href="#shop">Shop now</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+<div style="text-align:center; padding-top:50px; width:70%; padding-left:30%;">
+    <div id="about" class="footer__about">
+
+        <div style="margin-bottom:0px;" class="footer__logo">
+            <a asp-controller="Home" asp-action="Index">
+                <div class="section-title">
+                    <h3><b>About Us</b></h3>
+                </div>
+                <img style="width:120px; height:100px;" src="~/img/logoo.jpeg" alt="Logo">
+            </a>
+        </div>
+        <p>Buy and sell pre-loved clothing in great condition at a fraction of the price of new! Discover stylish, long-lasting pieces now, and contribute to sustainability and savings with our second-hand selection.</p>
+    </div>
+</div>
 <section class="product spad">
-            <div style="justify-content:center" class="row">
+            @* <div style="justify-content:center" class="row">
                 <div class="col-md-6 search-form">
                     <form class="d-flex" asp-action="Search" asp-controller="Home">
                         <input name="searchString" class="form-control me-1" type="search" placeholder="Search" aria-label="Search" />
                         <button class="btn btn-dark" type="submit">Search</button>
                     </form>
                 </div>
-            </div>
-    <div class="container">
+            </div> *@
+ 
+    <div id="shop" class="container">
         <div class="row">
             <div class="col-lg-4 col-md-4">
                 <div class="section-title">
