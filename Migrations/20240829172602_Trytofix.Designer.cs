@@ -12,8 +12,8 @@ using Mvc_Project.Models;
 namespace Mvc_Project.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20240829063332_init1")]
-    partial class init1
+    [Migration("20240829172602_Trytofix")]
+    partial class Trytofix
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -501,8 +501,8 @@ namespace Mvc_Project.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Price")
-                        .HasColumnType("int");
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18, 2)");
 
                     b.Property<string>("ProductImges")
                         .HasColumnType("nvarchar(max)");

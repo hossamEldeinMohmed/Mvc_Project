@@ -2,7 +2,7 @@
 
 namespace Mvc_Project.Models.Repositorys
 {
-    public class RoleReprository : ICrudOperation<IdentityRole<int>>
+    public class RoleReprository 
     {
      
             private readonly Context _context;

@@ -7,22 +7,158 @@
     <meta name="keywords" content="Ashion, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>@ViewData["Title"] - Dress Code </title>
+    <title>@ViewData["Title"] - Dress Code</title>
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
     <!-- Css Styles -->
     <link rel="stylesheet" href="~/css/bootstrap.min.css" type="text/css">
-    <link rel="stylesheet" href="~/css/font-awesome.min.css" type="text/css">
-    <link rel="stylesheet" href="~/css/elegant-icons.css" type="text/css">
-    <link rel="stylesheet" href="~/css/jquery-ui.min.css" type="text/css">
-    <link rel="stylesheet" href="~/css/magnific-popup.css" type="text/css">
-    <link rel="stylesheet" href="~/css/owl.carousel.min.css" type="text/css">
-    <link rel="stylesheet" href="~/css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="~/css/style.css" type="text/css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        #notification-bell {
+            position: relative;
+            display: inline-block;
+        }
+
+        #notification-count {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: red;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 12px;
+        }
+
+        #notification-list {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: white;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            width: 200px;
+        }
+
+            #notification-list ul {
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+            }
+
+                #notification-list ul li {
+                    padding: 8px;
+                    border-bottom: 1px solid #ddd;
+                }
+
+        #notification-count {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: red;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 12px;
+            visibility: hidden; 
+        }
+
+            #notification-count.visible {
+                visibility: visible; 
+            }
+
+
+
+        /* Container for navigation items */
+        .custom-nav {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* Navigation item style */
+        .nav-item {
+            position: relative;
+            display: inline-block;
+        }
+
+        /* Navigation link style */
+        .nav-link {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: #333;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        /* User profile image style */
+        .img-profile {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-left: 10px;
+        }
+
+        /* Dropdown menu container */
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            width: 200px;
+            z-index: 1000;
+        }
+
+        /* Show dropdown menu on hover */
+        .nav-item:hover .dropdown-menu {
+            display: block;
+        }
+
+        /* Dropdown item style */
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            text-decoration: none;
+            color: #333;
+            border-bottom: 1px solid #ddd;
+        }
+
+            /* Dropdown item hover style */
+            .dropdown-item:hover {
+                background-color: #f8f9fa;
+            }
+
+        /* Dropdown divider style */
+        .dropdown-divider {
+            border-top: 1px solid #ddd;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Icon style */
+        .dropdown-item i {
+            margin-right: 8px;
+        }
+
+        /* User name style */
+        .user-name {
+            margin-right: 10px;
+            font-size: 14px;
+        }
+
+
+    </style>
 </head>
 
 <body>
@@ -37,29 +173,26 @@
         <div class="offcanvas__close">+</div>
         <ul class="offcanvas__widget">
             <li><span class="icon_search search-switch"></span></li>
-            <li>
-                <a href="#">
-                    <span class="icon_heart_alt"></span>
-                    <div class="tip">2</div>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <span class="icon_bag_alt"></span>
-                    <div class="tip">2</div>
-                </a>
-            </li>
+            <li><a href="#"><span class="icon_heart_alt"></span><div class="tip">2</div></a></li>
+            <li><a href="#"><span class="icon_bag_alt"></span><div class="tip">2</div></a></li>
         </ul>
         <div class="offcanvas__logo">
             <a asp-controller="Home" asp-action="Index">
-                <img style="width:150px;
-	                                    height:50px;" src="~/img/DressCode-logo.png" alt="Logo">
+                <img style="width:150px; height:50px;" src="~/img/DressCode-logo.png" alt="Logo">
             </a>
         </div>
+
         <div id="mobile-menu-wrap"></div>
         <div class="offcanvas__auth">
-            <a asp-controller="Account" asp-action="Login">Login</a>
-            <a asp-controller="Account" asp-action="Register">Register</a>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <a asp-controller="Account" asp-action="Logout">Logout</a>
+            }
+            else
+            {
+                <a asp-controller="Account" asp-action="Login">Login</a>
+                <a asp-controller="Account" asp-action="Register">Register</a>
+            }
         </div>
     </div>
     <!-- Offcanvas Menu End -->
@@ -80,7 +213,6 @@
                             <li class="active"><a asp-controller="Home" asp-action="Index">Home</a></li>
                             <li>
                                 <a href="#">Women’s</a>
-                       
                                 <ul class="dropdown">
                                     <li><a asp-controller="Category" asp-action="Dresses">Dresses</a></li>
                                     <li><a asp-controller="Category" asp-action="Tops">Tops</a></li>
@@ -89,17 +221,19 @@
                                     <li><a asp-controller="Category" asp-action="AccessoriesAndMakeUp">Accessories & MakeUp</a></li>
                                 </ul>
                             </li>
-                          
-                            <li ><a asp-controller="Product" asp-action="Add">Add New Product</a></li>
-                            <li >
-                                <a asp-controller="User" asp-action="Details">
-                                    User profile
-                                    @if (ViewBag.ProfileImageUrl != null)
-                                    {
-                                        <img src="~/images/@ViewBag.ProfileImageUrl" alt="Profile Image" style="width: 40px; height: 40px; border-radius: 50%; margin-left: 5px;" />
-                                    }
-                                </a>
-                            </li>
+                            <li><a asp-controller="Product" asp-action="Add">Add New Product</a></li>
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <li>
+                                    <a asp-controller="User" asp-action="Details">
+                                        User profile
+                                        @if (ViewBag.ProfileImageUrl != null)
+                                        {
+                                            <img src="~/images/@ViewBag.ProfileImageUrl" alt="Profile Image" style="width: 30px; height: 30px; border-radius: 50%; margin-left: 5px;" />
+                                        }
+                                    </a>
+                                </li>
+                            }
                         </ul>
                     </nav>
                 </div>
@@ -107,22 +241,48 @@
                     <div class="header__right">
                         @if (User.Identity.IsAuthenticated)
                         {
-                            <a asp-controller="Account" asp-action="SignOut">Logout</a>
+                            <ul class="header__right__widget">
+                                
+                             
+
+
+                                <ul class="custom-nav">
+                                    <li>
+                                        <div id="notification-bell" style="position: relative;">
+                                            <i class="fas fa-bell"></i>
+                                            <span id="notification-count" style="position: absolute; top: 0; right: 0; background-color: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 12px;"></span>
+                                            <div id="notification-list" style="display: none; z-index:1000; position: absolute; right: 0; color: white ;background-color:#fcf5c7; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);">
+                                                <ul id="notifications"></ul>
+                                            </div>
+                                        </div>
+
+                                    </li>
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown">
+                                            <span class="user-name">@User.Identity.Name</span>
+                                            <img class="img-profile" src="~/AdminDashbord/img/undraw_profile.svg" alt="Profile" />
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="userDropdown">
+                                            <a class="dropdown-item" href="/User/Details">
+                                                <i class="fas fa-user"></i> Profile
+                                            </a>
+                                            <a class="dropdown-item" href="#">
+                                                <i class="fas fa-cogs"></i> Settings
+                                            </a>
+                                            <a class="dropdown-item" href="#">
+                                                <i class="fas fa-list"></i> Activity Log
+                                            </a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="/Account/SignOut">
+                                                <i class="fas fa-sign-out-alt"></i> Logout
+                                            </a>
+                                        </div>
+                                    </li>
+                                </ul>
+
+
+                            </ul>
                         }
-                        else
-                        {
-                            <a asp-controller="Account" asp-action="Login">Login</a>
-                            <a asp-controller="Account" asp-action="Register">Register</a>
-                        }
-                        <ul class="header__right__widget">
-                            <li><span class="icon_search search-switch"></span></li>
-                            <li>
-                                <a href="#">
-                                    <span class="icon_bag_alt"></span>
-                                    <div class="tip">2</div>
-                                </a>
-                            </li>
-                        </ul>
                     </div>
                 </div>
             </div>
@@ -145,17 +305,16 @@
                     <div class="footer__about">
                         <div class="footer__logo">
                             <a asp-controller="Home" asp-action="Index">
-                                <img style="width:150px;
-	                                    height:50px;" src="~/img/DressCode-logo.png" alt="Logo">
+                                <img style="width:150px; height:50px;" src="~/img/DressCode-logo.png" alt="Logo">
                             </a>
                         </div>
-                        <p>Buy and sell pre-loved clothing in great condition at a fraction of the price of new! Discover stylish, long-lasting pieces now, and contribute to sustainability and savings with every purchase.</p>
+                        <p>Buy and sell pre-loved clothing in great condition at a fraction of the price of new! Discover stylish, long-lasting pieces now, and contribute to sustainability and savings with our second-hand selection.</p>
                         <div class="footer__payment">
-                            <a href="#"><img src="~/img/payment/payment-1.png" alt="Payment 1"></a>
-                            <a href="#"><img src="~/img/payment/payment-2.png" alt="Payment 2"></a>
-                            <a href="#"><img src="~/img/payment/payment-3.png" alt="Payment 3"></a>
-                            <a href="#"><img src="~/img/payment/payment-4.png" alt="Payment 4"></a>
-                            <a href="#"><img src="~/img/payment/payment-5.png" alt="Payment 5"></a>
+                            <a href="#"><img src="~/img/payment/payment-1.png" alt=""></a>
+                            <a href="#"><img src="~/img/payment/payment-2.png" alt=""></a>
+                            <a href="#"><img src="~/img/payment/payment-3.png" alt=""></a>
+                            <a href="#"><img src="~/img/payment/payment-4.png" alt=""></a>
+                            <a href="#"><img src="~/img/payment/payment-5.png" alt=""></a>
                         </div>
                     </div>
                 </div>
@@ -166,7 +325,7 @@
                             <li><a href="#">About</a></li>
                             <li><a href="#">Blogs</a></li>
                             <li><a href="#">Contact</a></li>
-                            <li><a href="#">FAQ</a></li>
+                            <li><a href="#">FAQs</a></li>
                         </ul>
                     </div>
                 </div>
@@ -183,33 +342,179 @@
                 </div>
                 <div class="col-lg-4 col-md-8 col-sm-8">
                     <div class="footer__newslatter">
-                        <h6>Newsletter</h6>
+                        <h6>NEWSLETTER</h6>
                         <form action="#">
                             <input type="text" placeholder="Email">
                             <button type="submit" class="site-btn">Subscribe</button>
                         </form>
                         <div class="footer__social">
                             <a href="#"><i class="fa fa-facebook"></i></a>
-                            <a href="#"><i class="fa fa-linkedin"></i></a>
-                            <a href="#"><i class="fa fa-github"></i>
-
+                            <a href="#"><i class="fa fa-twitter"></i></a>
+                            <a href="#"><i class="fa fa-youtube-play"></i></a>
+                            <a href="#"><i class="fa fa-instagram"></i></a>
+                            <a href="#"><i class="fa fa-pinterest"></i></a>
                         </div>
                     </div>
                 </div>
             </div>
-            @* <div class="row">
-            <div class="col-lg-12">
-            <div class="footer__copyright__text">
-            <p>&copy; @DateTime.Now.Year All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a></p>
-            </div>
-            </div>
-            </div> *@
         </div>
     </footer>
     <!-- Footer Section End -->
     <!-- Js Plugins -->
-    <script src="~/js/jquery-3.3.1.min.js"></script>
-    <script src="~/js/bootstrap.min.js"></script>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // Update notification count in the UI
+        function updateNotificationCount(count) {
+            console.log('Updating notification count to:', count);
+
+            if (count !== undefined && count >= 0) {
+                if (count > 0) {
+                    $('#notification-count').text(count).addClass('visible');
+                } else {
+                    $('#notification-count').removeClass('visible').text('');
+                }
+            } else {
+                console.error('Invalid notification count:', count);
+            }
+        }
+
+        // Update notification list in the UI
+        function updateNotificationList(notifications) {
+            console.log('Updating notification list:', notifications);
+            var $notificationsList = $('#notifications');
+            $notificationsList.empty();
+
+            if (Array.isArray(notifications)) {
+                if (notifications.length > 0) {
+                    $.each(notifications, function (index, notification) {
+                        var listItem = '<li data-id="' + notification.id + '">' + notification.message + '</li>';
+                        $notificationsList.append(listItem);
+                    });
+                } else {
+                    $notificationsList.append('<li></li>');
+                }
+            } else {
+                console.error('Invalid notifications array:', notifications);
+            }
+        }
+
+        // Fetch unread notifications
+        function fetchNotifications() {
+            console.log('Fetching notifications...');
+            $.ajax({
+                url: '@Url.Action("GetNotifications", "AdminDashBord")?t=' + new Date().getTime(),
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    console.log('Notifications fetched successfully.');
+                    console.log('Received data:', data);
+                    if (data && data.notificationCount !== undefined && Array.isArray(data.notifications)) {
+                        updateNotificationCount(data.notificationCount);
+                        updateNotificationList(data.notifications);
+                    } else {
+                        console.error('Unexpected data format:', data);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error fetching notifications:', error);
+                }
+            });
+        }
+
+        // Fetch read notifications
+        function fetchReadNotifications() {
+            console.log('Fetching read notifications...');
+            $.ajax({
+                url: '@Url.Action("GetReadNotifications", "AdminDashBord")?t=' + new Date().getTime(),
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    console.log('Read notifications fetched successfully.');
+                    console.log('Received data:', data);
+                    if (data && Array.isArray(data.notifications)) {
+                        updateNotificationList(data.notifications);
+                    } else {
+                        console.error('Unexpected data format:', data);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error fetching read notifications:', error);
+                }
+            });
+        }
+
+        // Mark notifications as read
+        function markNotificationsAsRead() {
+            console.log('Marking notifications as read...');
+            var notificationIds = [];
+
+            $('#notifications li').each(function () {
+                var notificationId = $(this).data('id');
+                if (notificationId) {
+                    notificationIds.push(notificationId);
+                }
+            });
+
+            if (notificationIds.length > 0) {
+                $.ajax({
+                    url: '@Url.Action("MarkAsRead", "AdminDashBord")',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(notificationIds),
+                    success: function (response) {
+                        console.log('All notifications marked as read.');
+                        
+                        updateNotificationCount(0);
+                       
+                        fetchNotifications();
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error marking notifications as read:', error);
+                    }
+                });
+            }
+        }
+
+        $(document).ready(function () {
+            console.log('Document is ready.');
+            fetchNotifications();
+
+            $('#notification-bell').on('click', function () {
+                console.log('Notification bell clicked.');
+                $('#notification-list').toggle(); 
+
+                markNotificationsAsRead();
+
+               
+                setTimeout(function () {
+                    fetchReadNotifications();
+                }, 100); 
+            });
+
+            
+            $(document).on('click', function (event) {
+                if (!$(event.target).closest('#notification-bell, #notification-list').length) {
+                    $('#notification-list').hide();
+                }
+            });
+        });
+    </script>
+
+
+
+
+
+
+
+
+       
+
+   
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js?v=1.0"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/jquery.magnific-popup.min.js"></script>
     <script src="~/js/jquery-ui.min.js"></script>
     <script src="~/js/mixitup.min.js"></script>
@@ -218,7 +523,6 @@
     <script src="~/js/owl.carousel.min.js"></script>
     <script src="~/js/jquery.nicescroll.min.js"></script>
     <script src="~/js/main.js"></script>
-    @await RenderSectionAsync("Scripts", required: false)
 </body>
 
 </html>

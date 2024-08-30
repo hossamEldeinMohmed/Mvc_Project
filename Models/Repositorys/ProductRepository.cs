@@ -146,5 +146,16 @@ namespace Mvc_Project.Models.Repositorys
         {
           return  _context.Products.Include(p => p.User).FirstOrDefault(p => p.Id == id);
         }
+
+        public List<Product> GetAllWithUser()
+        {
+            return _context.Products
+                .Where(p => p.Status != "Accepted" && p.Status != "Rejected")
+                .Include(p => p.User)
+                .Include(p => p.Category)
+
+                .ToList();
+        }
+
     }
 }

@@ -40,5 +40,12 @@
                 _context.SaveChanges();
             }
         }
+
+        public IEnumerable<Notification> GetReadNotifications(int userId)
+        {
+            return _context.Notifications
+                .Where(n => n.UserId == userId && n.IsRead)
+                .ToList();
+        }
     }
 }

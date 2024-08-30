@@ -40,6 +40,10 @@ namespace Mvc_Project.Controllers
             {
                 return NotFound();
             }
+
+            ViewBag.UserName = user.UserName;
+            ViewBag.ProfileImageUrl = user.ProfileImageUrl;
+
             var viewModel = new UserProfileViewModel
             {
                 Id = user.Id,

@@ -14,7 +14,7 @@ namespace Mvc_Project.Models
         public Category Category { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
-        public int Price { get; set; }
+        public decimal Price { get; set; }
         [ForeignKey("User")]
         public int UserId { get; set; }
         public User User { get; set; }

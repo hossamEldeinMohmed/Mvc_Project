@@ -9,7 +9,7 @@ namespace Mvc_Project.Models
         public Context() : base() { }
 
         public DbSet<User> Users { get; set; }
-        /*public DbSet<Role> Roles { get; set; }
+/*        public DbSet<Role> Roles { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }*/
         public DbSet<Notification> Notifications { get; set; }
 
@@ -39,8 +39,16 @@ namespace Mvc_Project.Models
 
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
 
 
+            modelBuilder.Entity<Product>()
+                .Property(p => p.Price)
+                .HasColumnType("decimal(18, 2)");
 
+        }
+
+        }
     }
-}

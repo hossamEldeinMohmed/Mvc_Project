@@ -12,6 +12,8 @@ namespace Mvc_Project.Models.Repositorys
 
 
         public void MarkAsRead(int notificationId);
-      
+        public IEnumerable<Notification> GetReadNotifications(int userId);
+
+
     }
 }
