@@ -4,6 +4,7 @@ using Mvc_Project.Models.Repositorys;
 using Microsoft.AspNetCore.Authorization;
 using Mvc_Project.Models.ViewModels;
 using System.Security.Claims;
+
 namespace Mvc_Project.Controllers
 {
     public class UserController : Controller
@@ -20,6 +21,7 @@ namespace Mvc_Project.Controllers
             var users = _userRepository.GetAll();
             return View(users);
         }
+
         [Authorize]
         public IActionResult Details(int id)
         {
@@ -56,7 +58,6 @@ namespace Mvc_Project.Controllers
                 ProfileImageUrl = user.ProfileImageUrl
             };
 
-
             return View(viewModel);
         }
 
@@ -77,7 +78,27 @@ namespace Mvc_Project.Controllers
             return View(user);
         }
 
-      
+        [HttpGet]
+        [Authorize]
+        public IActionResult Edit(int id)
+        {
+            var user = _userRepository.GetByID(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var viewModel = new UserProfileViewModel
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                ProfileImageUrl = user.ProfileImageUrl
+            };
+
+            return View(viewModel);
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -95,8 +116,16 @@ namespace Mvc_Project.Controllers
                 user.PhoneNumber = viewModel.PhoneNumber;
                 user.UpdatedAt = DateTime.UtcNow;
 
-                if (viewModel.ProfileImageUrl != null)
+                if (viewModel.ProfileImage != null)
                 {
+                    // Remove the old image if it exists
+                    //var oldImagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", user.ProfileImageUrl);
+                    //if (System.IO.File.Exists(oldImagePath))
+                    //{
+                    //    System.IO.File.Delete(oldImagePath);
+                    //}
+
+                    // Save the new image
                     var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
                     var uniqueFileName = Guid.NewGuid().ToString() + "_" + viewModel.ProfileImage.FileName;
                     var filePath = Path.Combine(uploadsFolder, uniqueFileName);
@@ -108,12 +137,18 @@ namespace Mvc_Project.Controllers
 
                     user.ProfileImageUrl = uniqueFileName;
                 }
+
                 _userRepository.Update(user);
-                return RedirectToAction(nameof(Details));
+                return RedirectToAction(nameof(Details), new { id = user.Id });
             }
+
             return View(viewModel);
         }
 
+
+
+
+        [Authorize]
         public IActionResult Delete(int id)
         {
             var user = _userRepository.GetByID(id);
@@ -124,6 +159,7 @@ namespace Mvc_Project.Controllers
             return View(user);
         }
 
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)

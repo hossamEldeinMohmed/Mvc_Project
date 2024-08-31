@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "Product Details";
-    Layout = "_AddLayout";
+    Layout = "_HomeLayout";
 }
 
 <div class="container my-5">
@@ -33,6 +33,8 @@
         <div class="col-md-6 d-flex flex-column justify-content-center">
             <h2 class="text-primary mb-4">@Model.Product.Name</h2>
             <p class="text-muted mb-2">@Model.Product.Description</p>
+            <p class="text-muted mb-2">@Model.Product.Size</p>
+            <p class="text-muted mb-2">@Model.Product.Address</p>
             <p class="h4"><strong>Price:</strong> @Model.Product.Price.ToString("C", new System.Globalization.CultureInfo("ar-EG"))</p>
 
             <h4 class="mt-5">User Details</h4>

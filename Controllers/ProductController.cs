@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using Mvc_Project.Models;
 using Mvc_Project.Models.Repositorys;
 using Mvc_Project.Models.Repositorys.Mvc_Project.Models.Repositorys;
@@ -17,21 +16,22 @@ namespace Mvc_Project.Controllers
         public ProductController(IProductRepository productRepository)
         {
             _productRepository = productRepository;
-            
         }
-
 
         public IActionResult Index(string searchString)
         {
-            searchString = String.IsNullOrEmpty(searchString)?"": searchString.ToLower();
+            searchString = string.IsNullOrEmpty(searchString) ? "" : searchString.ToLower();
             var products = _productRepository.GetAll();
-            if(!String.IsNullOrEmpty(searchString))
+
+            if (!string.IsNullOrEmpty(searchString))
             {
-                products = products.Where(p => (p.Name).ToLower().Contains(searchString)).ToList();
+                products = products.Where(p => p.Name.ToLower().Contains(searchString)).ToList();
             }
+
             return View(products);
         }
-        public IActionResult Details (int id)
+
+        public IActionResult Details(int id)
         {
             var product = _productRepository.getProuductWithUset(id);
 
@@ -48,6 +48,7 @@ namespace Mvc_Project.Controllers
 
             return View(viewModel);
         }
+
         public IActionResult ProductDetails(int id)
         {
             var product = _productRepository.GetByID(id);
@@ -56,19 +57,19 @@ namespace Mvc_Project.Controllers
                 return NotFound();
             }
 
-           
             var viewModel = new ProductViewModel
             {
                 Id = product.Id,
                 Name = product.Name,
+                Size = product.Size,
+                Address = product.Address,
                 Description = product.Description,
-                CategoryName = product.Category?.Name, 
-                ProductImages = product.ProductImges 
+                CategoryName = product.Category?.Name,
+                ProductImages = product.ProductImges
             };
 
             return View(viewModel);
         }
-
 
         [Authorize]
         public IActionResult Add()
@@ -77,36 +78,25 @@ namespace Mvc_Project.Controllers
             {
                 return RedirectToAction("Login", "Account");
             }
-            var categories = _productRepository.GetAllCategories();
-            var categorySelectList = categories.Select(c => new SelectListItem
-            {
-                Value = c.Id.ToString(),
-                Text = c.Name
-            }).ToList();
 
             var viewModel = new ProductViewModel
             {
-                CategoryList = categorySelectList
+                CategoryList = GetCategorySelectList()
             };
 
             return View(viewModel);
         }
 
         [HttpPost]
-        [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Add(ProductViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-                var userIdFromCookie = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-                int userIdFromCookieParth = int.Parse(userIdFromCookie);
+                var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
 
-               
                 // Initialize the ProductImages list if it's null
-                if (viewModel.ProductImages == null)
-                {
-                    viewModel.ProductImages = new List<string>();
-                }
+                viewModel.ProductImages ??= new List<string>();
 
                 if (Request.Form.Files.Count > 0)
                 {
@@ -137,37 +127,24 @@ namespace Mvc_Project.Controllers
                 var product = new Product
                 {
                     Name = viewModel.Name,
+                    Size = viewModel.Size,
                     Description = viewModel.Description,
+                    Address = viewModel.Address,
                     CategoryId = viewModel.CategoryId ?? 0,
                     Price = viewModel.Price,
                     ProductImges = viewModel.ProductImages,
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow,
-
-                    UserId = userIdFromCookieParth
-
-
+                    UserId = userId
                 };
 
                 _productRepository.Add(product);
-
                 return RedirectToAction("Index");
-
-
             }
 
-            var categories = _productRepository.GetAllCategories();
-            ViewBag.CategoryList = categories.Select(c => new SelectListItem
-            {
-                Value = c.Id.ToString(),
-                Text = c.Name
-            }).ToList();
-
+            ViewBag.CategoryList = GetCategorySelectList();
             return View(viewModel);
         }
-
-
-
 
         public IActionResult Edit(int id)
         {
@@ -177,13 +154,7 @@ namespace Mvc_Project.Controllers
                 return NotFound();
             }
 
-            var categories = _productRepository.GetAllCategories();
-            ViewBag.CategoryList = categories.Select(c => new SelectListItem
-            {
-                Value = c.Id.ToString(),
-                Text = c.Name
-            }).ToList();
-
+            ViewBag.CategoryList = GetCategorySelectList();
             return View(product);
         }
 
@@ -202,10 +173,10 @@ namespace Mvc_Project.Controllers
                 return RedirectToAction("Index");
             }
 
+            ViewBag.CategoryList = GetCategorySelectList();
             return View(product);
         }
 
-        
         public IActionResult Delete(int id)
         {
             var product = _productRepository.GetByID(id);
@@ -222,6 +193,16 @@ namespace Mvc_Project.Controllers
         {
             _productRepository.Delete(id);
             return RedirectToAction("Index");
+        }
+
+        private List<SelectListItem> GetCategorySelectList()
+        {
+            var categories = _productRepository.GetAllCategories();
+            return categories.Select(c => new SelectListItem
+            {
+                Value = c.Id.ToString(),
+                Text = c.Name
+            }).ToList();
         }
     }
 }

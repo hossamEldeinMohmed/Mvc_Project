@@ -1,13 +1,14 @@
 ﻿@model List<Product>
 @{
     ViewData["Title"] = "AllProducts";
-    Layout = "_AddLayout";
+    Layout = "_HomeLayout";
 }
 
 <style>
     body {
         font-family: 'Roboto', sans-serif;
-        background-color: #f4f6f9;
+       /*  background-color: #f4f6f9; */
+       background-color:white;
     }
 
     h1 {
@@ -75,7 +76,9 @@
     <thead>
         <tr>
             <th>Name</th>
+            <th>Size</th>
             <th>Description</th>
+            <th>Address</th>
             <th>Category</th>
             <th>Price</th>
             <th>Actions</th>
@@ -86,7 +89,9 @@
         {
             <tr>
                 <td>@product.Name</td>
+                <td>@product.Size</td>
                 <td>@product.Description</td>
+                <td>@product.Address</td>
                 <td>@product.Category.Name</td>
                 <td>@product.Price.ToString("C")</td>
                 <td class="table-actions">

@@ -12,10 +12,12 @@
             <tr>
                 <th>Username</th>
                 <th>Product Name</th>
+                <th>Product Size</th>
                 <th>Product Image</th>
                 <th>Price</th>
                 <th>Category</th>
                 <th>Description</th>
+                <th>Address</th>
                 <th>Status</th>
                 @foreach (var product in Model)
                 {
@@ -32,6 +34,7 @@
                 <tr>
                     <td>@product.User?.UserName</td>
                     <td>@product.Name</td>
+                    <td>@product.Size</td>
                     <td>
                         <div class="d-flex align-items-center">
                             @foreach (var photo in product.ProductImges)
@@ -43,6 +46,7 @@
                     <td>@product.Price</td>
                     <td>@product.Category?.Name</td>
                     <td>@product.Description</td>
+                    <td>@product.Address</td>
                     <td>@product.Status</td>
                     <td>
                         @if (product.Status == "Pending")

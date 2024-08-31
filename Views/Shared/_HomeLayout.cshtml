@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -66,11 +67,11 @@
             border-radius: 50%;
             padding: 2px 6px;
             font-size: 12px;
-            visibility: hidden; 
+            visibility: hidden;
         }
 
             #notification-count.visible {
-                visibility: visible; 
+                visibility: visible;
             }
 
 
@@ -157,6 +158,9 @@
             font-size: 14px;
         }
 
+        .search{
+            width:500px;
+        }
 
     </style>
 </head>
@@ -178,8 +182,9 @@
         </ul>
         <div class="offcanvas__logo">
             <a asp-controller="Home" asp-action="Index">
-                <img style="width:150px; height:50px;" src="~/img/DressCode-logo.png" alt="Logo">
+                <img style="width:100px; height:70px;" src="~/img/logoo.jpeg" alt="Logo">
             </a>
+            
         </div>
 
         <div id="mobile-menu-wrap"></div>
@@ -203,9 +208,10 @@
                 <div class="col-xl-3 col-lg-2">
                     <div class="header__logo">
                         <a asp-controller="Home" asp-action="Index">
-                            <img style="width:150px; height:50px;" src="~/img/logo.webp" alt="Logo">
+                            <img style="width:120px; height:100px;" src="~/img/logoo.jpeg" alt="Logo">
                         </a>
                     </div>
+                    
                 </div>
                 <div class="col-xl-6 col-lg-7">
                     <nav class="header__menu">
@@ -222,28 +228,44 @@
                                 </ul>
                             </li>
                             <li><a asp-controller="Product" asp-action="Add">Add New Product</a></li>
-                            @if (User.Identity.IsAuthenticated)
-                            {
+                           @*  @if (Role.NormalizedName!="VENDOR")
+                            { *@
                                 <li>
-                                    <a asp-controller="User" asp-action="Details">
-                                        User profile
+                                    <a asp-controller="AdminDashBord" asp-action="ManageProducts">
+                                        DashBord
                                         @if (ViewBag.ProfileImageUrl != null)
                                         {
                                             <img src="~/images/@ViewBag.ProfileImageUrl" alt="Profile Image" style="width: 30px; height: 30px; border-radius: 50%; margin-left: 5px;" />
                                         }
                                     </a>
                                 </li>
-                            }
+                            @* } *@
+                            
                         </ul>
+                        
                     </nav>
+                    <div class="search">
+                        <div style="padding-left:0px; " class="col-lg-3">
+                            <div style="justify-content:center" class="row">
+                                <div style="padding-left:0px;" class="col-md-6 search-form">
+                                    <form style="width:430px;" class="d-flex" asp-action="Search" asp-controller="Home">
+                                        <input name="searchString" class="form-control me-1" type="search" placeholder="Search" aria-label="Search" />
+                                        <button class="btn btn-dark" type="submit">Search</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
                 </div>
-                <div class="col-lg-3">
+                
+                
                     <div class="header__right">
                         @if (User.Identity.IsAuthenticated)
                         {
                             <ul class="header__right__widget">
-                                
-                             
+
+
 
 
                                 <ul class="custom-nav">
@@ -283,13 +305,18 @@
 
                             </ul>
                         }
+                        else
+                        {
+                            <a asp-controller="Account" asp-action="Login">Login</a>
+                            <a asp-controller="Account" asp-action="Register">Register</a>
+                        }
                     </div>
-                </div>
             </div>
+        </div>
             <div class="canvas__open">
                 <i class="fa fa-bars"></i>
             </div>
-        </div>
+        
     </header>
     <!-- Header Section End -->
     <!-- Main Content -->
@@ -301,31 +328,17 @@
     <footer class="footer">
         <div class="container">
             <div class="row">
-                <div class="col-lg-4 col-md-6 col-sm-7">
-                    <div class="footer__about">
-                        <div class="footer__logo">
-                            <a asp-controller="Home" asp-action="Index">
-                                <img style="width:150px; height:50px;" src="~/img/DressCode-logo.png" alt="Logo">
-                            </a>
-                        </div>
-                        <p>Buy and sell pre-loved clothing in great condition at a fraction of the price of new! Discover stylish, long-lasting pieces now, and contribute to sustainability and savings with our second-hand selection.</p>
-                        <div class="footer__payment">
-                            <a href="#"><img src="~/img/payment/payment-1.png" alt=""></a>
-                            <a href="#"><img src="~/img/payment/payment-2.png" alt=""></a>
-                            <a href="#"><img src="~/img/payment/payment-3.png" alt=""></a>
-                            <a href="#"><img src="~/img/payment/payment-4.png" alt=""></a>
-                            <a href="#"><img src="~/img/payment/payment-5.png" alt=""></a>
-                        </div>
-                    </div>
+                <div style="margin-bottom:0px;" class="footer__logo">
+                    <a asp-controller="Home" asp-action="Index"> 
+                        <img style="width:240px; height:220px; padding-bottom:100px;" src="~/img/logoo.jpeg" alt="Logo">
+                    </a>
                 </div>
                 <div class="col-lg-2 col-md-3 col-sm-5">
                     <div class="footer__widget">
                         <h6>Quick links</h6>
                         <ul>
-                            <li><a href="#">About</a></li>
-                            <li><a href="#">Blogs</a></li>
-                            <li><a href="#">Contact</a></li>
-                            <li><a href="#">FAQs</a></li>
+                            <li><a href="#about">About</a></li>
+                            <li><a href="mailto:violafawzy855@gmail.com">Contact</a></li>
                         </ul>
                     </div>
                 </div>
@@ -333,27 +346,19 @@
                     <div class="footer__widget">
                         <h6>Account</h6>
                         <ul>
-                            <li><a href="#">My Account</a></li>
-                            <li><a href="#">Orders Tracking</a></li>
-                            <li><a href="#">Checkout</a></li>
-                            <li><a href="#">Wishlist</a></li>
+                            <li><a href="/User/Details">My Account</a></li>
+                            <li><a href="/Product">My verified products</a></li>
+                            
                         </ul>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-8 col-sm-8">
                     <div class="footer__newslatter">
-                        <h6>NEWSLETTER</h6>
-                        <form action="#">
-                            <input type="text" placeholder="Email">
-                            <button type="submit" class="site-btn">Subscribe</button>
+                        <h6>YOUR FEEDBACK</h6>
+                        <form asp-controller="Home" asp-action="Index">
+                            <input type="text" placeholder="say what you want..">
+                            <button type="submit" class="site-btn">Send</button>
                         </form>
-                        <div class="footer__social">
-                            <a href="#"><i class="fa fa-facebook"></i></a>
-                            <a href="#"><i class="fa fa-twitter"></i></a>
-                            <a href="#"><i class="fa fa-youtube-play"></i></a>
-                            <a href="#"><i class="fa fa-instagram"></i></a>
-                            <a href="#"><i class="fa fa-pinterest"></i></a>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -362,7 +367,7 @@
     <!-- Footer Section End -->
     <!-- Js Plugins -->
     
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  
     <script>
         // Update notification count in the UI
         function updateNotificationCount(count) {
@@ -464,9 +469,9 @@
                     data: JSON.stringify(notificationIds),
                     success: function (response) {
                         console.log('All notifications marked as read.');
-                        
+
                         updateNotificationCount(0);
-                       
+
                         fetchNotifications();
                     },
                     error: function (xhr, status, error) {
@@ -482,17 +487,17 @@
 
             $('#notification-bell').on('click', function () {
                 console.log('Notification bell clicked.');
-                $('#notification-list').toggle(); 
+                $('#notification-list').toggle();
 
                 markNotificationsAsRead();
 
-               
+
                 setTimeout(function () {
                     fetchReadNotifications();
-                }, 100); 
+                }, 100);
             });
 
-            
+
             $(document).on('click', function (event) {
                 if (!$(event.target).closest('#notification-bell, #notification-list').length) {
                     $('#notification-list').hide();
@@ -515,9 +520,9 @@
 
 
 
-       
 
-   
+
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js?v=1.0"></script>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
