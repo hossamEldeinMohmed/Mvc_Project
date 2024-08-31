@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -227,18 +228,18 @@
                                 </ul>
                             </li>
                             <li><a asp-controller="Product" asp-action="Add">Add New Product</a></li>
-                            @if (User.Identity.IsAuthenticated)
-                            {
+                           @*  @if (Role.NormalizedName!="VENDOR")
+                            { *@
                                 <li>
-                                    <a asp-controller="User" asp-action="Details">
-                                        User profile
+                                    <a asp-controller="AdminDashBord" asp-action="ManageProducts">
+                                        DashBord
                                         @if (ViewBag.ProfileImageUrl != null)
                                         {
                                             <img src="~/images/@ViewBag.ProfileImageUrl" alt="Profile Image" style="width: 30px; height: 30px; border-radius: 50%; margin-left: 5px;" />
                                         }
                                     </a>
                                 </li>
-                            }
+                            @* } *@
                             
                         </ul>
                         
@@ -247,7 +248,7 @@
                         <div style="padding-left:0px; " class="col-lg-3">
                             <div style="justify-content:center" class="row">
                                 <div style="padding-left:0px;" class="col-md-6 search-form">
-                                    <form style="width:440px;" class="d-flex" asp-action="Search" asp-controller="Home">
+                                    <form style="width:430px;" class="d-flex" asp-action="Search" asp-controller="Home">
                                         <input name="searchString" class="form-control me-1" type="search" placeholder="Search" aria-label="Search" />
                                         <button class="btn btn-dark" type="submit">Search</button>
                                     </form>
@@ -503,6 +504,8 @@
                 }
             });
         });
+
+       
     </script>
 
 
