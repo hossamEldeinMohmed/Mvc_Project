@@ -61,6 +61,8 @@ namespace Mvc_Project.Controllers
             {
                 Id = product.Id,
                 Name = product.Name,
+                Size = product.Size,
+                Address = product.Address,
                 Description = product.Description,
                 CategoryName = product.Category?.Name,
                 ProductImages = product.ProductImges
@@ -125,7 +127,9 @@ namespace Mvc_Project.Controllers
                 var product = new Product
                 {
                     Name = viewModel.Name,
+                    Size = viewModel.Size,
                     Description = viewModel.Description,
+                    Address = viewModel.Address,
                     CategoryId = viewModel.CategoryId ?? 0,
                     Price = viewModel.Price,
                     ProductImges = viewModel.ProductImages,
