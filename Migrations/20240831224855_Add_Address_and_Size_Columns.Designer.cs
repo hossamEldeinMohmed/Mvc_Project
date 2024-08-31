@@ -12,8 +12,8 @@ using Mvc_Project.Models;
 namespace Mvc_Project.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20240830160319_final")]
-    partial class final
+    [Migration("20240831224855_Add_Address_and_Size_Columns")]
+    partial class Add_Address_and_Size_Columns
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -487,6 +487,9 @@ namespace Mvc_Project.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
@@ -505,6 +508,9 @@ namespace Mvc_Project.Migrations
                         .HasColumnType("decimal(18, 2)");
 
                     b.Property<string>("ProductImges")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Size")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Status")
