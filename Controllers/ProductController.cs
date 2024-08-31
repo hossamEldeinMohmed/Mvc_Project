@@ -98,8 +98,7 @@ namespace Mvc_Project.Controllers
         {
             if (ModelState.IsValid)
             {
-                var userIdFromCookie = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-                int userIdFromCookieParth = int.Parse(userIdFromCookie);
+                var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
 
                
                 // Initialize the ProductImages list if it's null
