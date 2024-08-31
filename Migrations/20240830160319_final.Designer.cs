@@ -12,8 +12,8 @@ using Mvc_Project.Models;
 namespace Mvc_Project.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20240830130036_AlterShipmentDetailTable")]
-    partial class AlterShipmentDetailTable
+    [Migration("20240830160319_final")]
+    partial class final
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -748,8 +748,9 @@ namespace Mvc_Project.Migrations
                     b.Property<DateTime>("ShippedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("TrackingNumber")
-                        .HasColumnType("int");
+                    b.Property<string>("TrackingNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
