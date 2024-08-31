@@ -157,5 +157,12 @@ namespace Mvc_Project.Models.Repositorys
                 .ToList();
         }
 
+
+        public int GetProductCountByCategory(int categoryId)
+        {
+            return _context.Products.Count(p => p.CategoryId == categoryId);
+        }
+
+
     }
 }

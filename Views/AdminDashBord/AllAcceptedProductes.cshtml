@@ -66,7 +66,13 @@
                                                 <td>@product.Price.ToString("C")</td>
                                                 <td>@product.Category?.Name</td>
                                                 <td>@product.User?.UserName</td>
-                                                <td> <button type="submit" name="status" value="Accepted" style="background-color:#de7c7c; color:white;" class="btn ">More Details</button></td>
+                                                <td>
+                                                    <a href="@Url.Action("Details", "Product", new { id = product.Id })" style="background-color:#de7c7c; color:white;" class="btn">
+                                                        More Details
+                                                    </a>
+
+                                                </td>
+
                                             </tr>
                                         }
                                     </tbody>

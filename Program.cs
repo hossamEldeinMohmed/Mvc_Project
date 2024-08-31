@@ -54,12 +54,18 @@ namespace Mvc_Project
                 options.Tokens.ProviderMap.Add("Default", new TokenProviderDescriptor(typeof(DataProtectorTokenProvider<User>)));
                 options.Tokens.EmailConfirmationTokenProvider = "Default";
                 options.Tokens.PasswordResetTokenProvider = "Default";
+
             })
+                    .AddRoles<IdentityRole<int>>()
                 .AddEntityFrameworkStores<Context>().AddDefaultTokenProviders();
+          
 
             /////////////////////////////////
 
             var app = builder.Build();
+
+
+
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())

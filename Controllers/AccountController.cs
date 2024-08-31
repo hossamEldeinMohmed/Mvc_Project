@@ -122,7 +122,14 @@ namespace Mvc_Project.Controllers
                     if (Found)
                     {
 
+
                       await   signInManager.SignInAsync(UserFromDB, UserLoginFromRequst.RememberMe);
+
+                        if (await userManager.IsInRoleAsync(UserFromDB, "Admin"))
+                        {
+                            
+                            return RedirectToAction("Index", "AdminDashBord");
+                        }
 
                         return RedirectToAction("Index", "Home");
                     }
