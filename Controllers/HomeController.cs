@@ -21,39 +21,46 @@ namespace Mvc_Project.Controllers
         }
 
 
-      
+
         public IActionResult Index(int pageNumber = 1)
         {
             var userIdFromCookie = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
+            
             if (string.IsNullOrEmpty(userIdFromCookie))
             {
-                return BadRequest("User is not authenticated or User ID is missing from the claim.");
+                
+                ViewBag.UserName = "Guest";
+                ViewBag.ProfileImageUrl = "/images/default-profile.png"; 
             }
-
-            if (!int.TryParse(userIdFromCookie, out int userIdFromCookieParsed))
+            else
             {
-                return BadRequest("User ID is invalid.");
+                if (!int.TryParse(userIdFromCookie, out int userIdFromCookieParsed))
+                {
+                    return BadRequest("User ID is invalid.");
+                }
+
+                var user = _UserRepository.GetByID(userIdFromCookieParsed);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                ViewBag.UserName = user.UserName;
+                ViewBag.ProfileImageUrl = user.ProfileImageUrl;
             }
 
-            var user = _UserRepository.GetByID(userIdFromCookieParsed);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            ViewBag.UserName = user.UserName;
-            ViewBag.ProfileImageUrl = user.ProfileImageUrl;
             int pageSize = 12;
             var totalProducts = _productRepository.Count();
             var totalPages = (int)Math.Ceiling(totalProducts / (double)pageSize);
-            var AllProducts = _productRepository.GetAllRandomly( pageNumber, pageSize);
+            var AllProducts = _productRepository.GetAllRandomly(pageNumber, pageSize);
 
             ViewBag.TotalPages = totalPages;
             ViewBag.CurrentPage = pageNumber;
 
             return View(AllProducts);
         }
+
         public IActionResult Search(string searchString)
         {
             searchString = String.IsNullOrEmpty(searchString) ? "" : searchString.ToLower();
