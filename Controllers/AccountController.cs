@@ -72,13 +72,10 @@ namespace Mvc_Project.Controllers
                     await userManager.AddToRoleAsync(userToDb, "vendor");
 
                     var confirmationToken = await userManager.GenerateEmailConfirmationTokenAsync(userToDb);
-                  /*  await SendConfirmationEmailAsync(userToDb, confirmationToken);
-*/
+                    await SendConfirmationEmailAsync(userToDb, confirmationToken);
 
-                   /* //make cookie
 
-                    await signInManager.SignInAsync(userToDb, false);*/
-
+                    
                     return RedirectToAction("RegisterConfirmation", "Account");
 
                 }
@@ -226,23 +223,27 @@ namespace Mvc_Project.Controllers
             return View("Confirmation");
         }
 
+        
+
+
         private async Task SendConfirmationEmailAsync(User user, string token)
         {
             var confirmationLink = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, token = token }, Request.Scheme);
-
             var emailSubject = "Please Confirm Your Email";
             var emailBody = $@"
-        <h2>Hello {user.UserName},</h2>
-        <p>Thank you for registering with us. Please confirm your email address by clicking the link below:</p>
-        <p><a href='{confirmationLink}'>Confirm your email</a></p>
-        <p>If you did not create an account, no further action is required.</p>
-        <p>Best regards,<br/> She Shares Team</p>";
+    <h2>Hello {user.UserName},</h2>
+    <p>Thank you for registering with She Shares, a community dedicated to empowering women.</p>
+    <p>Please confirm your email address by clicking the button below:</p>
+    <p style='text-align:center;'>
+        <a href='{confirmationLink}' style='background-color:#de7c7c;color:white;padding:10px 20px;text-decoration:none;border-radius:5px;font-weight:bold;display:inline-block;'>Confirm your email</a>
+    </p>
+    
+    <p>Best regards,<br/>She Shares Team</p>";
+
 
             await emailSender.SendEmailAsync(user.Email, emailSubject, emailBody);
+
         }
 
-
-
-
+        }
     }
-}

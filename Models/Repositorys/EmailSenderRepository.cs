@@ -32,11 +32,15 @@ namespace Mvc_Project.Models.Repositorys
 
             var mailMessage = new MailMessage
             {
-                From = new MailAddress(_smtpUser, " Dress Code"),
+                From = new MailAddress(_smtpUser, "She Shares"),
                 Subject = subject,
                 Body = htmlMessage,
                 IsBodyHtml = true,
             };
+
+           /* mailMessage.ReplyToList.Add(new MailAddress("famemad51@yahoo.com"));*/
+
+
             mailMessage.To.Add(email);
             try
             {
