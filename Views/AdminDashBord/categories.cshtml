@@ -1,5 +1,7 @@
-﻿
-@model List<Category>
+﻿@* @using Mvc_Project.Models.ViewModels
+
+@model CategoryViewModel
+ 
 
 @{
     ViewData["Title"] = "Category Management";
@@ -8,56 +10,159 @@
 
 <h2>Manage Categories</h2>
 
-<div class="row">
-   
-    <div class="col-md-8">
-        <h3>Existing Categories</h3>
-        <table class="table table-bordered">
-            <thead>
+<!-- عرض الرسائل -->
+@if (ViewBag.Message != null)
+{
+    <div class="alert @(ViewBag.MessageType == "success" ? "alert-success" : "alert-danger")">
+        @ViewBag.Message
+    </div>
+}
+
+<table class="table border">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Product Count</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Categories != null && Model.Categories.Any())
+        {
+            @foreach (var category in Model.Categories)
+            {
                 <tr>
-                    <th>Category ID</th>
-                    <th>Category Name</th>
-                    <th>Description</th>
+                    <td>@category.Name</td>
+                    <td>@category.Description</td>
+                    <td>@Model.ProductCounts[category.Id]</td>
+                    <td>
+                        <a href="@Url.Action("DeleteCategory", new { id = category.Id })" onclick="confirmDelete('@category.Id', '@category.Name' ) class="btn btn-danger">Delete</a>
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach (var category in Model)
-                {
-                    <tr>
-                        <td>@category.Id</td>
-                        <td>@category.Name</td>
-                        <td>@category.Description</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="4">No categories available.</td>
+            </tr>
+        }
+    </tbody>
+</table>
 
-   
-    <div class="col-md-4">
-        <h3>Add New Category</h3>
 
-       @*  public int Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime? UpdatedAt { get; set; }
 
+
+
+
+@section Scripts {
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+    function confirmDelete(categoryId, categoryName) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: `Do you want to delete the category "${categoryName}"?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, cancel!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+              
+                window.location.href = '@Url.Action("DeleteCategory", new { id = "" })'.replace('""', categoryId);
+            }
+        });
+    }
+
+
+    </script>
+}
  *@
-       @*  <form asp-action="Create" method="post">
-            <div class="form-group">
-                <label asp-for="Name" class="control-label">Category Name</label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
 
-            <div class="form-group">
-                <label asp-for="Description" class="control-label">Description</label>
-                <textarea asp-for="Description" class="form-control"></textarea>
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
 
-            <button type="submit" class="btn btn-primary">Add Category</button>
-        </form> *@
+
+@using Mvc_Project.Models.ViewModels
+@model CategoryViewModel
+
+@{
+    ViewData["Title"] = "Category Management";
+    Layout = "_AdminDashBordLayout";
+}
+
+<h2>Manage Categories</h2>
+
+<!-- عرض الرسائل -->
+@if (ViewBag.Message != null)
+{
+    <div class="alert @(ViewBag.MessageType == "success" ? "alert-success" : "alert-danger")">
+        @ViewBag.Message
     </div>
-</div>
+}
+
+<table class="table border">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Product Count</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Categories != null && Model.Categories.Any())
+        {
+            @foreach (var category in Model.Categories)
+            {
+                <tr>
+                    <td>@category.Name</td>
+                    <td>@category.Description</td>
+                    <td>@Model.ProductCounts[category.Id]</td>
+                    <td>
+                        <a href="#" 
+                           class="btn btn-danger" 
+                           onclick="return confirmDelete('@category.Id', '@category.Name')">Delete</a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="4">No categories available.</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+    function confirmDelete(categoryId, categoryName) {
+        Swal.fire({
+            title: 'SHE SHARES ِAleart<br> Are you sure?',
+            text: `Do you want to delete the category "${categoryName}"?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, cancel!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+            
+                    window.location.href = '@Url.Action("DeleteCategory", "AdminDashBord", new { id = "__id__" })'.replace('__id__', categoryId);
+            }
+        });
+        
+        return false;
+    }
+    </script>
+}
+
+

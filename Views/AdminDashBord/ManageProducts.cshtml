@@ -19,7 +19,13 @@
                 <th>Description</th>
                 <th>Address</th>
                 <th>Status</th>
-                <th>Action</th>
+                @foreach (var product in Model)
+                {
+                    @if (@product.Status == "Pending")
+                    {
+                        <th>Action</th>
+                    }
+                }
             </tr>
         </thead>
         <tbody>

@@ -12,8 +12,13 @@ using Mvc_Project.Models;
 namespace Mvc_Project.Migrations
 {
     [DbContext(typeof(Context))]
+<<<<<<<< HEAD:Migrations/20240831101001_hos.Designer.cs
     [Migration("20240831101001_hos")]
     partial class hos
+========
+    [Migration("20240831224855_Add_Address_and_Size_Columns")]
+    partial class Add_Address_and_Size_Columns
+>>>>>>>> 47849217ccc78f03c9b5a8cc19880871383ef994:Migrations/20240831224855_Add_Address_and_Size_Columns.Designer.cs
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

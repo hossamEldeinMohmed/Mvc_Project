@@ -1,16 +1,19 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Mvc_Project.Models;
 using Mvc_Project.Models.Repositorys;
 using Mvc_Project.Models.Repositorys.Mvc_Project.Models.Repositorys;
 using Mvc_Project.Models.ViewModels;
 using System.Collections.Generic;
 using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace Mvc_Project.Controllers
 {
-    /* [Authorize(Roles = "admin")]*/
+    [Authorize(Roles = "admin")]
     public class AdminDashBordController : Controller
     {
 
@@ -59,6 +62,11 @@ namespace Mvc_Project.Controllers
                 {
                     var rejectionMessage = $"Your product '{product.Name}' has been rejected. Reason: {rejectReason}";
                     notification.AddNotification(product.UserId, rejectionMessage);
+                }
+                else if (status == "Accepted")
+                {
+                    var acceptanceMessage = $" congratulations!  Your product '{product.Name}' has been accepted.";
+                    notification.AddNotification(product.UserId, acceptanceMessage);
                 }
 
                 _productRepository.Update(product);
@@ -119,51 +127,6 @@ namespace Mvc_Project.Controllers
 
 
 
-        /*
-                public IActionResult AllCategories()
-                {
-                    var categories = catagory.GetAll();
-                    return View("categories", categories);
-                }
-
-
-
-                [HttpPost]
-                public IActionResult CreateCategory(Category categoryfromAdmin)
-                {
-                    if (ModelState.IsValid)
-                    {
-                        categoryfromAdmin.Name.ToLower();
-
-                        catagory.Add(categoryfromAdmin);
-                        return View("categories");
-                    }
-                    return View("categories", categoryfromAdmin);
-                }
-
-        */
-
-
-
-
-
-        /*   public IActionResult RejectedProductes()
-           {
-               *//*int userId =*//*
-               var rejectedProductsWithReasons = _productRepository.GetAllRejected()
-                   .Select(product => new ProductNotificationViewModel
-                   {
-                       ProductId = product.Id,
-                       ProductName = product.Name,
-                       RejectionReason = product..FirstOrDefault()?.Message,
-                       RejectionDate = product.Notifications.FirstOrDefault()?.CreatedAt ?? DateTime.Now
-                   })
-                   .ToList();
-
-               return View("ManageProducts", rejectedProductsWithReasons);
-           }
-
-   */
 
 
 
@@ -219,7 +182,63 @@ namespace Mvc_Project.Controllers
         }
 
 
-      
+
+
+
+
+        private CategoryViewModel PrepareCategoryViewData()
+        {
+            List<Category> categories = catagory.GetAll();
+
+            var productCounts = new Dictionary<int, int>();
+
+            foreach (var category in categories)
+            {
+                productCounts[category.Id] = _productRepository.GetProductCountByCategory(category.Id);
+            }
+
+            return new CategoryViewModel
+            {
+                Categories = categories,
+                ProductCounts = productCounts
+            };
+        }
+
+
+
+        public IActionResult ShowAllCategories()
+        {
+            var GetCatgorydata = PrepareCategoryViewData();
+
+
+            return View("categories", GetCatgorydata);
+
+        }
+
+
+
+
+        public IActionResult DeleteCategory(int id)
+        {
+            var category = catagory.GetByID(id);
+
+            if (category == null)
+            {
+                var CatagoryviewModel = PrepareCategoryViewData();
+                ViewBag.Message = "Category not found";
+                ViewBag.MessageType = "error";
+
+                return View("categories", CatagoryviewModel);
+            }
+
+            catagory.Delete(id);
+
+            var updatedViewModel = PrepareCategoryViewData();
+            ViewBag.Message = "Category deleted successfully";
+            ViewBag.MessageType = "success";
+
+            return View("categories", updatedViewModel);
+        }
 
 
 
@@ -299,11 +318,26 @@ namespace Mvc_Project.Controllers
             }
 
             return BadRequest("Invalid user ID.");
+
         }
+
+
+        public async Task<IActionResult> Statistics()
+        {
+            var statisticsModel = new CountViewModel
+            {
+                ProductCount = _productRepository.GetAll().Count(),
+                PendingProduct = _productRepository.GetAllWithUser().Count(),
+                UserCount = await userManager.Users.CountAsync()
+            };
+
+            
+            return Json(statisticsModel);
+        }
+
+
     }
 
-
-
-}
+    }
 
 

@@ -1,0 +1,64 @@
+﻿@model Mvc_Project.Models.ViewModels.UserRoleAssignmentViewModel
+
+@{
+    ViewData["Title"] = "Assign Roles";
+    Layout = "_AdminDashBordLayout";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<form id="assignRolesForm" asp-controller="Role" asp-action="AssignRoles" method="post">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Available Roles</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Users.Count; i++)
+            {
+                <tr>
+                    <td>
+                        @Model.Users[i].UserName
+                        <input type="hidden" name="Users[@i].UserId" value="@Model.Users[i].UserId" />
+                        <input type="hidden" name="Users[@i].UserName" value="@Model.Users[i].UserName" />
+                    </td>
+                    <td>
+                        @foreach (var role in Model.Users[i].AvailableRoles)
+                        {
+                            <div class="form-check">
+                                <input type="checkbox"
+                                       class="form-check-input"
+                                       id="role-@Model.Users[i].UserId-@role"
+                                       name="Users[@i].SelectedRoles"
+                                       value="@role"
+                                @(Model.Users[i].SelectedRoles.Contains(role) ? "checked" : "") />
+                                <label class="form-check-label" for="role-@Model.Users[i].UserId-@role">
+                                    @role
+                                </label>
+                            </div>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="form-group">
+        <button type="submit" class="btn" style="background-color:#de7c7c; color:white;">Save Changes</button>
+    </div>
+</form>

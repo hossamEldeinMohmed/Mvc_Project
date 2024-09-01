@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <Content Remove="Views\AdminDashBord\AllAcceptedProductes.cshtml" />
+    <Content Remove="Views\Role\AssignRoles.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,6 +35,7 @@
 
   <ItemGroup>
     <None Include="Views\AdminDashBord\AllAcceptedProductes.cshtml" />
+    <None Include="Views\Role\AssignRoles.cshtml" />
     <None Include="wwwroot\.DS_Store" />
   </ItemGroup>
 

@@ -1,4 +1,7 @@
 ﻿
+@using System.Security.Claims
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -228,14 +231,17 @@
                                 </ul>
                             </li>
                             <li><a asp-controller="Product" asp-action="Add">Add New Product</a></li>
-                           @*  @if (Role.NormalizedName!="VENDOR")
-                            { *@
+                            @if (User.IsInRole("admin"))
+                            {
+
                                 <li>
                                     <a asp-controller="AdminDashBord" asp-action="ManageProducts">
                                         DashBord
                                       
                                     </a>
                                 </li>
+
+                            }
                             @* } *@
                             
                         </ul>
@@ -279,14 +285,12 @@
                                     <li class="nav-item dropdown">
                                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown">
                                             <span class="user-name">@User.Identity.Name</span>
-                                        @if (ViewBag.ProfileImageUrl != null)
+                                         @if (ViewBag.ProfileImageUrl != null)
                                         {
-                                            <img src="~/images/@ViewBag.ProfileImageUrl" alt="Profile Image" style="width: 30px; height: 30px; border-radius: 50%; margin-left: 5px;" />
+                                            <img src="~/images/@ViewBag.ProfileImageUrl" alt="Profile Image" class="img-profile" />
                                         }else{
-                                            <img class="img-profile" src="~/AdminDashbord/img/undraw_profile.svg" alt="Profile" />
-
+                                        <img class="img-profile" src="~/AdminDashbord/img/undraw_profile.svg" alt="Profile" />
                                         }
-
                                         </a>
                                         <div class="dropdown-menu" aria-labelledby="userDropdown">
                                             <a class="dropdown-item" href="/User/Details">
@@ -509,7 +513,12 @@
             });
         });
 
-       
+
+
+      
+            
+ 
+
     </script>
 
 
