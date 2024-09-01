@@ -74,20 +74,53 @@ namespace Mvc_Project.Controllers
 
 
 
+        /* public async Task<IActionResult> AssignRoles()
+         {
+             var users = await userManager.Users.ToListAsync();
+             var roles = await roleManager.Roles.Select(r => r.Name).ToListAsync();
+
+             var model = new UserRoleAssignmentViewModel
+             {
+                 Users = (await Task.WhenAll(users.Select(async u => new UserRoleViewModel
+                 {
+                     UserId = u.Id,
+                     UserName = u.UserName,
+                     AvailableRoles = roles,
+                     SelectedRoles = (await userManager.GetRolesAsync(u)).ToList()
+                 }))).ToList()
+             };
+
+             return View("AssignRoles", model);
+         }*/
+
+
+
+
         public async Task<IActionResult> AssignRoles()
         {
             var users = await userManager.Users.ToListAsync();
             var roles = await roleManager.Roles.Select(r => r.Name).ToListAsync();
 
+            var userRoleViewModels = new List<UserRoleViewModel>();
+
+            foreach (var user in users)
+            {
+                var selectedRoles = await userManager.GetRolesAsync(user);
+
+                var viewModel = new UserRoleViewModel
+                {
+                    UserId = user.Id,
+                    UserName = user.UserName,
+                    AvailableRoles = roles,
+                    SelectedRoles = selectedRoles.ToList()
+                };
+
+                userRoleViewModels.Add(viewModel);
+            }
+
             var model = new UserRoleAssignmentViewModel
             {
-                Users = (await Task.WhenAll(users.Select(async u => new UserRoleViewModel
-                {
-                    UserId = u.Id,
-                    UserName = u.UserName,
-                    AvailableRoles = roles,
-                    SelectedRoles = (await userManager.GetRolesAsync(u)).ToList()
-                }))).ToList()
+                Users = userRoleViewModels
             };
 
             return View("AssignRoles", model);
@@ -96,8 +129,9 @@ namespace Mvc_Project.Controllers
 
 
 
-       
- 
+
+
+
 
 
 
@@ -178,6 +212,16 @@ namespace Mvc_Project.Controllers
 
             return RedirectToAction("AssignRoles");
         }
+
+
+
+
+
+
+
+
+
+       
 
     }
 }
