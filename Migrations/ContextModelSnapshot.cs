@@ -484,6 +484,9 @@ namespace Mvc_Project.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
@@ -502,6 +505,9 @@ namespace Mvc_Project.Migrations
                         .HasColumnType("decimal(18, 2)");
 
                     b.Property<string>("ProductImges")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Size")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Status")
