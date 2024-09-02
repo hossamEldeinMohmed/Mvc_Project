@@ -244,13 +244,43 @@ namespace Mvc_Project.Controllers
 
 
 
-        [HttpGet]
+        /* [HttpGet]
+         public IActionResult GetNotifications()
+         {
+             var userIdFromCookie = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+             if (int.TryParse(userIdFromCookie, out int userIdFromCookieParth))
+             {
+                 var notifications = notification.GetUserNotifications(userIdFromCookieParth);
+
+                 return Json(new
+                 {
+                     NotificationCount = notifications.Count(n => !n.IsRead),
+                     Notifications = notifications.Select(n => new
+                     {
+                         n.Id,
+                         n.Message,
+                         n.CreatedAt,
+                         n.IsRead
+                     }).ToList()
+                 });
+             }
+
+             return BadRequest("Invalid user ID.");
+         }
+ */
+
+
+
+        [AllowAnonymous]
         public IActionResult GetNotifications()
         {
             var userIdFromCookie = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            Console.WriteLine($"Extracted User ID from Cookie: {userIdFromCookie}");
 
             if (int.TryParse(userIdFromCookie, out int userIdFromCookieParth))
             {
+                Console.WriteLine($"Parsed User ID: {userIdFromCookieParth}");
                 var notifications = notification.GetUserNotifications(userIdFromCookieParth);
 
                 return Json(new
@@ -268,6 +298,8 @@ namespace Mvc_Project.Controllers
 
             return BadRequest("Invalid user ID.");
         }
+
+        [AllowAnonymous]
 
         [HttpPost]
         public IActionResult MarkAsRead([FromBody] List<int> notificationIds)
@@ -295,7 +327,7 @@ namespace Mvc_Project.Controllers
 
             return BadRequest("Invalid notification IDs.");
         }
-
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult GetReadNotifications()
         {
